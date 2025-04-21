@@ -1,0 +1,17 @@
+.felo-search-button {
+  padding: 4px 8px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 12px; /* Adjust as needed */
+  line-height: 1.2; /* Adjust line height slightly */
+  vertical-align: baseline; /* Try baseline alignment */
+  transition: background-color 0.2s ease;
+  display: inline-block; /* Ensure it takes space */
+  z-index: 9999; /* Try to bring it to the front */
+}
+
+.felo-search-button:hover {
+  background-color: #eee !important;
+}
