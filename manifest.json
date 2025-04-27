@@ -1,26 +1,33 @@
 {
-  "manifest_version": 3,
-  "name": "YouTube to Felo Search",
-  "version": "1.0",
-  "description": "Adds a button to YouTube video titles to search the video URL on Felo.",
-  "permissions": ["tabs"],
-  "content_scripts": [
-    {
-      "matches": ["*://*.youtube.com/*"],
-      "js": ["content.js"],
-      "css": ["styles.css"]
-    }
-  ],
-  "action": {
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
-  "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
-  }
+	"manifest_version": 3,
+	"name": "__MSG_extensionName__",
+	"version": "1.0",
+	"description": "__MSG_extensionDescription__",
+	"default_locale": "en",
+	"permissions": ["tabs"],
+	"content_scripts": [
+		{
+			"matches": ["*://*.youtube.com/*"],
+			"js": ["content.js"],
+			"css": ["styles.css"]
+		}
+	],
+	"action": {
+		"default_icon": {
+			"16": "icons/icon16.png",
+			"48": "icons/icon48.png",
+			"128": "icons/icon128.png"
+		}
+	},
+	"icons": {
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
+	},
+	"web_accessible_resources": [
+		{
+			"resources": ["icons/icon.svg"],
+			"matches": ["*://*.youtube.com/*"]
+		}
+	]
 }

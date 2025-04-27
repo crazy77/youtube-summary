@@ -1,0 +1,42 @@
+{
+	"extensionName": {
+		"message": "YouTube to Felo Search",
+		"description": "The name of the extension."
+	},
+	"extensionDescription": {
+		"message": "Adds a button to YouTube video titles to search the video URL on Felo.",
+		"description": "The description of the extension."
+	},
+	"buttonText": {
+		"message": "felo",
+		"description": "Text displayed next to the icon on the button."
+	},
+	"iconAltText": {
+		"message": "Felo Search Icon",
+		"description": "Alt text for the Felo search icon."
+	},
+	"fallbackButtonText": {
+		"message": "🔍felo",
+		"description": "Text displayed on the button if the icon fails to load."
+	},
+	"errorIconUrl": {
+		"message": "Error getting icon URL:",
+		"description": "Error message when chrome.runtime.getURL fails."
+	},
+	"errorIconLoad": {
+		"message": "Failed to load icon image:",
+		"description": "Warning message when the icon image fails to load."
+	},
+	"errorNoUrl": {
+		"message": "Could not extract valid URL on click from:",
+		"description": "Warning message when URL extraction fails on button click."
+	},
+	"errorFindParent": {
+		"message": "Could not find parent video element and not on watch page.",
+		"description": "Warning message when the button's parent element cannot be found."
+	},
+	"errorInsertButton": {
+		"message": "Error inserting button",
+		"description": "Error message logged when inserting the button fails."
+	}
+}
