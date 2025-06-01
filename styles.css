@@ -1,28 +1,39 @@
 .felo-search-button {
-  padding: 3px 8px;
+  padding: 1px 4px;
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #f8f8f8;
-  font-size: 12px; 
+  font-size: 11px; 
   line-height: 1.2;
   transition: background-color 0.2s ease;
   display: inline-flex; 
   align-items: center; 
   justify-content: center; 
   gap: 4px; 
-  z-index: 9999; 
+  z-index: 9999;
+  text-decoration: none !important;
+  color: black !important;
 }
-
 
 .felo-search-button:hover {
   background-color: #CEDBFF !important;
+  text-decoration: none !important;
+}
+
+.felo-search-button:visited {
+  color: black !important;
+}
+
+.felo-search-button:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
 }
 
 .felo-icon {
-  width: 16px;
-  height: 16px;
-  display: inline-block; /* Ensure it behaves like an image */
+  width: 12px;
+  height: 12px;
+  display: inline-block;
 }
 
 .felo-shorts-button {
