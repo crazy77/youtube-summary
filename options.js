@@ -1,5 +1,17 @@
 // YouTube AI Search Extension - Options Page Script
 
+/**
+ * Get localized message with fallback
+ */
+function getI18nMessage(key, fallback = '') {
+    try {
+        return chrome.i18n.getMessage(key) || fallback;
+    } catch (e) {
+        console.warn(`[Options] Failed to get i18n message for key: ${key}`, e);
+        return fallback;
+    }
+}
+
 // 기본 설정값
 const DEFAULT_SETTINGS = {
     enableFelo: true,
@@ -36,7 +48,7 @@ async function loadSettings() {
         
     } catch (error) {
         console.error('[Options] Error loading settings:', error);
-        showStatusMessage('설정을 불러오는 중 오류가 발생했습니다.', 'error');
+        showStatusMessage(getI18nMessage('optionsLoadError', '설정을 불러오는 중 오류가 발생했습니다.'), 'error');
         
         // 에러 시 기본값으로 설정
         document.getElementById('enableFelo').checked = DEFAULT_SETTINGS.enableFelo;
@@ -58,7 +70,7 @@ async function saveSettings() {
         
         // 최소 하나의 버튼은 활성화되어야 함
         if (!settings.enableFelo && !settings.enableGemini) {
-            showStatusMessage('최소 하나의 검색 버튼은 활성화되어야 합니다.', 'error');
+            showStatusMessage(getI18nMessage('optionsMinimumButtonRequired', '최소 하나의 검색 버튼은 활성화되어야 합니다.'), 'error');
             return;
         }
         
@@ -83,7 +95,7 @@ async function saveSettings() {
         }
         
         if (saveSuccess) {
-            showStatusMessage('설정이 성공적으로 저장되었습니다! 🎉', 'success');
+            showStatusMessage(getI18nMessage('optionsSaveSuccess', '설정이 성공적으로 저장되었습니다! 🎉'), 'success');
             
             // 잠시 후 성공 메시지 숨기기
             setTimeout(() => {
@@ -95,7 +107,7 @@ async function saveSettings() {
         
     } catch (error) {
         console.error('[Options] Error saving settings:', error);
-        showStatusMessage(`설정 저장 중 오류가 발생했습니다: ${error.message}`, 'error');
+        showStatusMessage(`${getI18nMessage('optionsSaveError', '설정 저장 중 오류가 발생했습니다:')} ${error.message}`, 'error');
     }
 }
 
@@ -104,7 +116,7 @@ async function saveSettings() {
  */
 function resetGeminiPrompt() {
     document.getElementById('geminiPrompt').value = DEFAULT_SETTINGS.geminiPrompt;
-    showStatusMessage('Gemini 프롬프트가 기본값으로 복원되었습니다.', 'success');
+    showStatusMessage(getI18nMessage('optionsResetSuccess', 'Gemini 프롬프트가 기본값으로 복원되었습니다.'), 'success');
     setTimeout(() => {
         hideStatusMessage();
     }, 2000);
@@ -165,7 +177,7 @@ function setupFormValidation() {
         
         if (currentLength > maxLength) {
             event.target.value = event.target.value.substring(0, maxLength);
-            showStatusMessage(`프롬프트는 최대 ${maxLength}자까지 입력 가능합니다.`, 'error');
+            showStatusMessage(getI18nMessage('optionsPromptMaxLength', '프롬프트는 최대 1000자까지 입력 가능합니다.'), 'error');
             setTimeout(() => {
                 hideStatusMessage();
             }, 3000);
@@ -182,7 +194,7 @@ function setupFormValidation() {
             // 모든 체크박스가 해제되지 않도록 방지
             if (!enableFelo && !enableGemini) {
                 checkbox.checked = true;
-                showStatusMessage('최소 하나의 검색 버튼은 활성화되어야 합니다.', 'error');
+                showStatusMessage(getI18nMessage('optionsMinimumButtonRequired', '최소 하나의 검색 버튼은 활성화되어야 합니다.'), 'error');
                 setTimeout(() => {
                     hideStatusMessage();
                 }, 3000);
@@ -215,12 +227,65 @@ function setupEventListeners() {
 }
 
 /**
+ * 다국어 텍스트 업데이트
+ */
+function updateI18nTexts() {
+    // 제목 업데이트
+    const titleElement = document.querySelector('h1');
+    if (titleElement) {
+        titleElement.textContent = getI18nMessage('optionsTitle', 'YouTube AI Search 설정');
+    }
+    
+    // 섹션 제목들 업데이트
+    const buttonSettingsTitle = document.querySelector('h2');
+    if (buttonSettingsTitle) {
+        buttonSettingsTitle.innerHTML = '⚙️ ' + getI18nMessage('optionsButtonSettings', '버튼 설정');
+    }
+    
+    const geminiPromptTitle = document.querySelectorAll('h2')[1];
+    if (geminiPromptTitle) {
+        geminiPromptTitle.innerHTML = '🤖 ' + getI18nMessage('optionsGeminiPrompt', 'Gemini 프롬프트 설정');
+    }
+    
+    // 체크박스 라벨들 업데이트
+    const feloLabel = document.querySelector('label[for="enableFelo"] span');
+    if (feloLabel) {
+        feloLabel.textContent = getI18nMessage('optionsEnableFelo', 'Felo 검색 버튼 활성화');
+    }
+    
+    const geminiLabel = document.querySelector('label[for="enableGemini"] span');
+    if (geminiLabel) {
+        geminiLabel.textContent = getI18nMessage('optionsEnableGemini', 'Gemini 검색 버튼 활성화');
+    }
+    
+    // 플레이스홀더 업데이트
+    const geminiPromptTextarea = document.getElementById('geminiPrompt');
+    if (geminiPromptTextarea) {
+        geminiPromptTextarea.placeholder = getI18nMessage('optionsGeminiPromptPlaceholder', 'Gemini에서 사용할 프롬프트를 입력하세요...');
+    }
+    
+    // 버튼 텍스트 업데이트
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    if (saveBtn) {
+        saveBtn.textContent = getI18nMessage('optionsSave', '설정 저장');
+    }
+    
+    const resetBtn = document.getElementById('resetGeminiBtn');
+    if (resetBtn) {
+        resetBtn.textContent = getI18nMessage('optionsReset', '기본값으로 복원');
+    }
+}
+
+/**
  * 초기화
  */
 async function initialize() {
     console.log('[Options] Initializing options page...');
     
     try {
+        // 다국어 텍스트 업데이트
+        updateI18nTexts();
+        
         // 설정 로드
         await loadSettings();
         
@@ -229,13 +294,11 @@ async function initialize() {
         setupKeyboardShortcuts();
         setupFormValidation();
         
-
-        
         console.log('[Options] Options page initialized successfully');
         
     } catch (error) {
         console.error('[Options] Error initializing options page:', error);
-        showStatusMessage('옵션 페이지 초기화 중 오류가 발생했습니다.', 'error');
+        showStatusMessage(getI18nMessage('optionsLoadError', '옵션 페이지 초기화 중 오류가 발생했습니다.'), 'error');
     }
 }
 

@@ -1,23 +1,35 @@
 {
 	"extensionName": {
-		"message": "YouTube to Felo Search",
+		"message": "YouTube AI Search",
 		"description": "The name of the extension."
 	},
 	"extensionDescription": {
-		"message": "Adds a button to YouTube video titles to search the video URL on Felo.",
+		"message": "Adds Felo and Gemini AI search buttons to YouTube videos for smart video content analysis.",
 		"description": "The description of the extension."
 	},
 	"buttonText": {
 		"message": "felo",
-		"description": "Text displayed next to the icon on the button."
+		"description": "Text displayed on the Felo button."
+	},
+	"geminiButtonText": {
+		"message": "gemini",
+		"description": "Text displayed on the Gemini button."
 	},
 	"iconAltText": {
 		"message": "Felo Search Icon",
 		"description": "Alt text for the Felo search icon."
 	},
+	"geminiIconAltText": {
+		"message": "Gemini Search Icon",
+		"description": "Alt text for the Gemini search icon."
+	},
 	"fallbackButtonText": {
 		"message": "🔍felo",
-		"description": "Text displayed on the button if the icon fails to load."
+		"description": "Text displayed on the Felo button if the icon fails to load."
+	},
+	"geminiFallbackButtonText": {
+		"message": "🤖gemini",
+		"description": "Text displayed on the Gemini button if the icon fails to load."
 	},
 	"errorIconUrl": {
 		"message": "Error getting icon URL:",
@@ -28,15 +40,87 @@
 		"description": "Warning message when the icon image fails to load."
 	},
 	"errorNoUrl": {
-		"message": "Could not extract valid URL on click from:",
-		"description": "Warning message when URL extraction fails on button click."
-	},
-	"errorFindParent": {
-		"message": "Could not find parent video element and not on watch page.",
-		"description": "Warning message when the button's parent element cannot be found."
+		"message": "No URL available for this button",
+		"description": "Warning message when no URL is available for the button."
 	},
 	"errorInsertButton": {
-		"message": "Error inserting button",
+		"message": "Error inserting buttons:",
 		"description": "Error message logged when inserting the button fails."
+	},
+	"geminiProcessing": {
+		"message": "Processing...",
+		"description": "Text displayed when Gemini button is processing."
+	},
+	"geminiAutoInputFailed": {
+		"message": "Auto-input failed. Please manually paste the copied content.",
+		"description": "Alert message when Gemini auto-input fails."
+	},
+	"geminiPromptFailed": {
+		"message": "Cannot process prompt. Please copy manually:",
+		"description": "Alert message when Gemini prompt processing fails."
+	},
+	"optionsTitle": {
+		"message": "YouTube AI Search Settings",
+		"description": "Title of the options page."
+	},
+	"optionsButtonSettings": {
+		"message": "Button Settings",
+		"description": "Title of the button settings section in options page."
+	},
+	"optionsEnableFelo": {
+		"message": "Enable Felo Search Button",
+		"description": "Label for the Felo button enable checkbox."
+	},
+	"optionsEnableGemini": {
+		"message": "Enable Gemini Search Button",
+		"description": "Label for the Gemini button enable checkbox."
+	},
+	"optionsGeminiPrompt": {
+		"message": "Gemini Prompt Settings",
+		"description": "Title of the Gemini prompt settings section."
+	},
+	"optionsGeminiPromptPlaceholder": {
+		"message": "Enter the prompt to use with Gemini...",
+		"description": "Placeholder text for the Gemini prompt input field."
+	},
+	"optionsDefaultValue": {
+		"message": "Default:",
+		"description": "Label for default value display."
+	},
+	"optionsVariableInfo": {
+		"message": "{VIDEO_URL} will be automatically replaced with the video link.",
+		"description": "Information text about variable substitution."
+	},
+	"optionsSave": {
+		"message": "Save Settings",
+		"description": "Text for the save settings button."
+	},
+	"optionsReset": {
+		"message": "Reset to Default",
+		"description": "Text for the reset to default button."
+	},
+	"optionsSaveSuccess": {
+		"message": "Settings saved successfully! 🎉",
+		"description": "Success message for settings save."
+	},
+	"optionsSaveError": {
+		"message": "Error saving settings:",
+		"description": "Error message for settings save failure."
+	},
+	"optionsLoadError": {
+		"message": "Error loading settings.",
+		"description": "Error message for settings load failure."
+	},
+	"optionsMinimumButtonRequired": {
+		"message": "At least one search button must be enabled.",
+		"description": "Warning message when all buttons are disabled."
+	},
+	"optionsResetSuccess": {
+		"message": "Gemini prompt has been reset to default.",
+		"description": "Success message for prompt reset."
+	},
+	"optionsPromptMaxLength": {
+		"message": "Prompt can be up to 1000 characters long.",
+		"description": "Warning message for prompt length limit."
 	}
 }

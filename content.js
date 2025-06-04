@@ -529,23 +529,23 @@ function createGeminiButton(elementType, videoUrl) {
 		// Create icon
 		const icon = document.createElement("img");
 		icon.src = chrome.runtime.getURL("icons/gemini.svg");
-		icon.alt = "Gemini Search Icon";
+		icon.alt = getI18nMessage("geminiIconAltText", "Gemini Search Icon");
 		icon.classList.add(CONFIG.CLASSES.geminiIcon);
 
 		// Handle icon loading error
 		icon.onerror = () => {
-			console.warn("Failed to load Gemini icon:", icon.src);
+			console.warn(getI18nMessage("errorIconLoad", "Failed to load icon:"), icon.src);
 			button.innerHTML = "";
-			button.appendChild(document.createTextNode("🤖gemini"));
+			button.appendChild(document.createTextNode(getI18nMessage("geminiFallbackButtonText", "🤖gemini")));
 		};
 
 		// Assemble button content
 		button.appendChild(icon);
-		button.appendChild(document.createTextNode(" gemini"));
+		button.appendChild(document.createTextNode(` ${getI18nMessage("geminiButtonText", "gemini")}`))
 
 	} catch (error) {
-		console.error("Error getting Gemini icon URL:", error);
-		button.textContent = "🤖gemini";
+		console.error(getI18nMessage("errorIconUrl", "Error getting icon URL:"), error);
+		button.textContent = getI18nMessage("geminiFallbackButtonText", "🤖gemini");
 	}
 
 	// Add click handler
@@ -563,10 +563,10 @@ function createGeminiButton(elementType, videoUrl) {
 				
 				// Show temporary success feedback
 				const originalIcon = button.querySelector('img');
-				const originalText = button.childNodes[1] ? button.childNodes[1].textContent : " gemini";
+				const originalText = button.childNodes[1] ? button.childNodes[1].textContent : ` ${getI18nMessage("geminiButtonText", "gemini")}`;
 				
 				button.innerHTML = "";
-				button.appendChild(document.createTextNode("처리중..."));
+				button.appendChild(document.createTextNode(getI18nMessage("geminiProcessing", "처리중...")));
 				button.style.backgroundColor = "#1a73e8";
 				button.style.color = "white";
 				
@@ -589,16 +589,16 @@ function createGeminiButton(elementType, videoUrl) {
 				// Fallback: copy to clipboard
 				try {
 					await navigator.clipboard.writeText(fullPrompt);
-					alert("자동 입력에 실패했습니다. 클립보드에 복사된 내용을 수동으로 붙여넣어 주세요.");
+					alert(getI18nMessage("geminiAutoInputFailed", "자동 입력에 실패했습니다. 클립보드에 복사된 내용을 수동으로 붙여넣어 주세요."));
 					window.open(CONFIG.GEMINI.baseUrl, "_blank");
 				} catch (clipboardError) {
 					// Ultimate fallback: show prompt in alert
-					alert(`프롬프트를 처리할 수 없습니다. 수동으로 복사해주세요:\n\n${fullPrompt}`);
+					alert(`${getI18nMessage("geminiPromptFailed", "프롬프트를 처리할 수 없습니다. 수동으로 복사해주세요:")} \n\n${fullPrompt}`);
 					window.open(CONFIG.GEMINI.baseUrl, "_blank");
 				}
 			}
 		} else {
-			console.warn("No URL available for Gemini button");
+			console.warn(getI18nMessage("errorNoUrl", "No URL available for this button"));
 		}
 	});
 
