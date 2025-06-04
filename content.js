@@ -43,7 +43,20 @@ const CONFIG = {
 	CLASSES: {
 		button: "felo-search-button",
 		icon: "felo-icon", 
-		shortsButton: "felo-shorts-button"
+		shortsButton: "felo-shorts-button",
+		geminiButton: "gemini-search-button",
+		geminiIcon: "gemini-icon",
+		buttonContainer: "ai-buttons-container"
+	},
+	GEMINI: {
+		baseUrl: "https://gemini.google.com/app",
+		prompt: "해당 영상을 단계별로 디테일하고 자세히 정리"
+	},
+	// 기본 설정값
+	DEFAULT_SETTINGS: {
+		enableFelo: true,
+		enableGemini: true,
+		geminiPrompt: "해당 영상을 단계별로 디테일하고 자세히 정리"
 	}
 };
 
@@ -54,10 +67,45 @@ let state = {
 	processedElements: new WeakSet(),
 	debounceTimer: null,
 	observer: null,
-	retryTimer: null
+	retryTimer: null,
+	// 사용자 설정
+	settings: CONFIG.DEFAULT_SETTINGS
 };
 
 // === UTILITY FUNCTIONS ===
+
+/**
+ * Load user settings from storage
+ */
+async function loadUserSettings() {
+	try {
+		let result;
+		// sync storage 먼저 시도
+		try {
+			result = await chrome.storage.sync.get(CONFIG.DEFAULT_SETTINGS);
+		} catch (syncError) {
+			// local storage로 백업 시도
+			try {
+				result = await chrome.storage.local.get(CONFIG.DEFAULT_SETTINGS);
+			} catch (localError) {
+				throw localError;
+			}
+		}
+		
+		// 결과 병합 및 유효성 검사
+		state.settings = {
+			enableFelo: result.enableFelo !== undefined ? result.enableFelo : CONFIG.DEFAULT_SETTINGS.enableFelo,
+			enableGemini: result.enableGemini !== undefined ? result.enableGemini : CONFIG.DEFAULT_SETTINGS.enableGemini,
+			geminiPrompt: result.geminiPrompt || CONFIG.DEFAULT_SETTINGS.geminiPrompt
+		};
+		
+		return state.settings;
+	} catch (error) {
+		console.warn("[Felo] Failed to load settings, using defaults:", error);
+		state.settings = { ...CONFIG.DEFAULT_SETTINGS };
+		return state.settings;
+	}
+}
 
 /**
  * Get localized message with fallback
@@ -386,16 +434,28 @@ function findButtonPlacement(baseElement, elementType) {
 // === BUTTON CREATION AND MANAGEMENT ===
 
 /**
- * Remove all existing Felo buttons from the page
+ * Remove all existing AI buttons (Felo and Gemini) from the page
  */
-function removeAllFeloButtons() {
+function removeAllAIButtons() {
 	try {
-		const existingButtons = document.querySelectorAll(`.${CONFIG.CLASSES.button}`);
+		const existingButtons = document.querySelectorAll(`.${CONFIG.CLASSES.button}, .${CONFIG.CLASSES.geminiButton}`);
 		existingButtons.forEach(button => {
 			try {
 				button.remove();
 			} catch (error) {
 				console.warn("[Felo] Error removing button:", error);
+			}
+		});
+		
+		// Also remove button containers
+		const existingContainers = document.querySelectorAll(`.${CONFIG.CLASSES.buttonContainer}`);
+		existingContainers.forEach(container => {
+			try {
+				if (container.children.length === 0) {
+					container.remove();
+				}
+			} catch (error) {
+				console.warn("[Felo] Error removing container:", error);
 			}
 		});
 	} catch (error) {
@@ -453,21 +513,116 @@ function createFeloButton(elementType, videoUrl) {
 }
 
 /**
+ * Create Gemini search button with pre-extracted URL
+ */
+function createGeminiButton(elementType, videoUrl) {
+	// Use <button> tag for better functionality
+	const button = document.createElement("button");
+	button.classList.add(CONFIG.CLASSES.geminiButton);
+	button.type = "button";
+	
+	if (elementType === "shortsLockup" || elementType === "shortsReel") {
+		button.classList.add(CONFIG.CLASSES.shortsButton);
+	}
+
+	try {
+		// Create icon
+		const icon = document.createElement("img");
+		icon.src = chrome.runtime.getURL("icons/gemini.svg");
+		icon.alt = "Gemini Search Icon";
+		icon.classList.add(CONFIG.CLASSES.geminiIcon);
+
+		// Handle icon loading error
+		icon.onerror = () => {
+			console.warn("Failed to load Gemini icon:", icon.src);
+			button.innerHTML = "";
+			button.appendChild(document.createTextNode("🤖gemini"));
+		};
+
+		// Assemble button content
+		button.appendChild(icon);
+		button.appendChild(document.createTextNode(" gemini"));
+
+	} catch (error) {
+		console.error("Error getting Gemini icon URL:", error);
+		button.textContent = "🤖gemini";
+	}
+
+	// Add click handler
+	button.addEventListener("click", async (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		
+		if (videoUrl) {
+			const userPrompt = state.settings.geminiPrompt || CONFIG.GEMINI.prompt;
+			const fullPrompt = `${videoUrl}\n\n${userPrompt}`;
+			
+			try {
+				// Store prompt in chrome storage for the Gemini content script
+				await chrome.storage.local.set({ geminiPrompt: fullPrompt });
+				
+				// Show temporary success feedback
+				const originalIcon = button.querySelector('img');
+				const originalText = button.childNodes[1] ? button.childNodes[1].textContent : " gemini";
+				
+				button.innerHTML = "";
+				button.appendChild(document.createTextNode("처리중..."));
+				button.style.backgroundColor = "#1a73e8";
+				button.style.color = "white";
+				
+				setTimeout(() => {
+					button.innerHTML = "";
+					if (originalIcon) {
+						button.appendChild(originalIcon.cloneNode(true));
+					}
+					button.appendChild(document.createTextNode(originalText));
+					button.style.backgroundColor = "";
+					button.style.color = "";
+				}, 2000);
+				
+				// Open Gemini page - the content script will handle auto-input
+				window.open(CONFIG.GEMINI.baseUrl, "_blank");
+				
+			} catch (storageError) {
+				console.warn("Failed to store prompt:", storageError);
+				
+				// Fallback: copy to clipboard
+				try {
+					await navigator.clipboard.writeText(fullPrompt);
+					alert("자동 입력에 실패했습니다. 클립보드에 복사된 내용을 수동으로 붙여넣어 주세요.");
+					window.open(CONFIG.GEMINI.baseUrl, "_blank");
+				} catch (clipboardError) {
+					// Ultimate fallback: show prompt in alert
+					alert(`프롬프트를 처리할 수 없습니다. 수동으로 복사해주세요:\n\n${fullPrompt}`);
+					window.open(CONFIG.GEMINI.baseUrl, "_blank");
+				}
+			}
+		} else {
+			console.warn("No URL available for Gemini button");
+		}
+	});
+
+	return button;
+}
+
+/**
  * Add click handler to button (simplified version for fallback cases)
  */
 function addButtonClickHandler(button) {
-	// Only add handler if href is "#" (fallback case)
-	if (button.href.endsWith("#")) {
+	// Only add handler for Felo buttons with href="#" (fallback case)
+	// Gemini buttons already have their own click handlers
+	if (button.classList.contains(CONFIG.CLASSES.button) && button.href && button.href.endsWith("#")) {
 		button.addEventListener("click", (event) => {
 			event.preventDefault();
 			console.warn(getI18nMessage("errorNoUrl", "No URL available for this button"));
 		});
 	}
-	// For buttons with valid href, browser handles the navigation automatically
+	// For Felo buttons with valid href, browser handles the navigation automatically
+	// For Gemini buttons, they have their own click handlers already attached
 }
 
 /**
- * Add button to element if not already present
+ * Add buttons to element if not already present
  */
 function addButtonToElement(targetElement, useLocationHref = false) {
 	// Skip if already processed (multiple checks for reliability)
@@ -495,16 +650,16 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 		return;
 	}
 
-	// Find button placement first to check if button already exists
+	// Find button placement first to check if buttons already exist
 	const { container: buttonContainer, insertionPoint } = findButtonPlacement(baseElement, elementType);
 
 	if (!buttonContainer) {
 		return;
 	}
 
-	// Check if button already exists in this container
-	const existingButton = buttonContainer.querySelector(`.${CONFIG.CLASSES.button}`);
-	if (existingButton) {
+	// Check if buttons already exist in this container
+	const existingContainer = buttonContainer.querySelector(`.${CONFIG.CLASSES.buttonContainer}`);
+	if (existingContainer) {
 		state.processedElements.add(targetElement);
 		targetElement.dataset.feloProcessed = 'true';
 		return;
@@ -519,15 +674,45 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 	}
 
 	try {
-		// Create and add button with pre-extracted URL
-		const button = createFeloButton(elementType, videoUrl);
-		addButtonClickHandler(button);
+		// Create button container
+		const aiButtonsContainer = document.createElement("div");
+		aiButtonsContainer.classList.add(CONFIG.CLASSES.buttonContainer);
+		aiButtonsContainer.style.cssText = `
+			display: flex;
+			gap: 8px;
+			align-items: center;
+			margin-top: 4px;
+		`;
 
-		// Insert button
+		// Create buttons based on user settings
+		const buttonsToAdd = [];
+		
+		if (state.settings.enableFelo) {
+			const feloButton = createFeloButton(elementType, videoUrl);
+			addButtonClickHandler(feloButton);
+			buttonsToAdd.push(feloButton);
+		}
+		
+		if (state.settings.enableGemini) {
+			const geminiButton = createGeminiButton(elementType, videoUrl);
+			buttonsToAdd.push(geminiButton);
+		}
+		
+		// Skip if no buttons to add
+		if (buttonsToAdd.length === 0) {
+			return;
+		}
+
+		// Add buttons to container
+		buttonsToAdd.forEach(button => {
+			aiButtonsContainer.appendChild(button);
+		});
+
+		// Insert button container
 		if (insertionPoint) {
-			buttonContainer.insertBefore(button, insertionPoint);
+			buttonContainer.insertBefore(aiButtonsContainer, insertionPoint);
 		} else {
-			buttonContainer.appendChild(button);
+			buttonContainer.appendChild(aiButtonsContainer);
 		}
 
 		// Mark as processed with multiple methods
@@ -535,7 +720,7 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 		targetElement.dataset.feloProcessed = 'true';
 
 	} catch (error) {
-		console.error(getI18nMessage("errorInsertButton", "Error inserting button:"), error, "Container:", buttonContainer);
+		console.error(getI18nMessage("errorInsertButton", "Error inserting buttons:"), error, "Container:", buttonContainer);
 	}
 }
 
@@ -663,7 +848,7 @@ const debouncedProcessElements = debounce(processAllElements, CONFIG.TIMING.debo
  */
 function handleYouTubeNavigation() {
 	// Remove all existing buttons to prevent stale URLs
-	removeAllFeloButtons();
+	removeAllAIButtons();
 	
 	// Clear processed elements cache on navigation
 	state.processedElements = new WeakSet();
@@ -935,6 +1120,32 @@ async function initialize() {
 	console.log("[Felo] Initializing YouTube Felo Search extension...");
 
 	try {
+		// Load user settings first
+		await loadUserSettings();
+		
+		// Setup storage change listener
+		chrome.storage.onChanged.addListener((changes, namespace) => {
+			if (namespace === 'sync' || namespace === 'local') {
+				// 약간의 지연을 두고 설정 재로드
+				setTimeout(async () => {
+					await loadUserSettings();
+					// Remove all existing buttons and re-process
+					removeAllAIButtons();
+					state.processedElements = new WeakSet();
+					// 기존 processed 상태 초기화
+					try {
+						const processedElements = document.querySelectorAll('[data-felo-processed="true"]');
+						processedElements.forEach(el => {
+							delete el.dataset.feloProcessed;
+						});
+					} catch (error) {
+						// Ignore errors during cleanup
+					}
+					debouncedProcessElements();
+				}, 100);
+			}
+		});
+		
 		// Setup event listeners
 		setupYouTubeEventListeners();
 		
@@ -966,7 +1177,7 @@ function cleanup() {
 	console.log("[Felo] Cleaning up extension...");
 	
 	// Remove all buttons
-	removeAllFeloButtons();
+	removeAllAIButtons();
 	
 	if (state.observer) {
 		state.observer.disconnect();
@@ -1030,7 +1241,10 @@ function forceCheckWatchPage() {
 		}
 	}
 	
-	if (mainTitle && !mainTitle.querySelector(`.${CONFIG.CLASSES.button}`)) {
+	if (mainTitle && 
+		mainTitle.offsetParent !== null && 
+		!state.processedElements.has(mainTitle) && 
+		mainTitle.dataset.feloProcessed !== 'true') {
 		addButtonToElement(mainTitle, true);
 	}
 	
@@ -1067,7 +1281,7 @@ function forceCheckWatchPage() {
 			const processedContainers = new Set();
 			allLinks.forEach((link, index) => {
 				let container = link.closest('div, ytd-compact-video-renderer, ytd-video-renderer');
-				if (container && !processedContainers.has(container) && !container.querySelector(`.${CONFIG.CLASSES.button}`)) {
+				if (container && !processedContainers.has(container) && !container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
 					processedContainers.add(container);
 					addButtonToElement(container, false);
 				}
@@ -1139,7 +1353,7 @@ function setupSidebarScrollListener() {
 					!processedContainers.has(container) && 
 					!state.processedElements.has(container) &&
 					container.dataset.feloProcessed !== 'true' &&
-					!container.querySelector(`.${CONFIG.CLASSES.button}`)) {
+					!container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
 					
 					processedContainers.add(container);
 					addButtonToElement(container, false);

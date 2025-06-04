@@ -40,3 +40,57 @@
   /* Add specific styles if the default button looks bad on shorts */
   /* Example: Maybe smaller font or padding */
 }
+
+/* Gemini 버튼 스타일 */
+.gemini-search-button {
+  padding: 1px 4px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f7ff;
+  font-size: 11px; 
+  line-height: 1.2;
+  transition: background-color 0.2s ease;
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 4px; 
+  z-index: 9999;
+  text-decoration: none !important;
+  color: #1a73e8 !important;
+  font-family: inherit;
+  outline: none;
+}
+
+.gemini-search-button:hover {
+  background-color: #e8f0fe !important;
+  text-decoration: none !important;
+}
+
+.gemini-search-button:visited {
+  color: #1a73e8 !important;
+}
+
+.gemini-search-button:focus {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.gemini-search-button:active {
+  background-color: #d2e3fc !important;
+}
+
+.gemini-icon {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+}
+
+/* AI 버튼 컨테이너 스타일 */
+.ai-buttons-container {
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+  margin-top: 4px !important;
+  flex-wrap: wrap !important;
+}

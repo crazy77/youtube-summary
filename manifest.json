@@ -1,15 +1,24 @@
 {
 	"manifest_version": 3,
 	"name": "__MSG_extensionName__",
-	"version": "1.1",
+	"version": "1.2",
 	"description": "__MSG_extensionDescription__",
 	"default_locale": "en",
-	"permissions": ["tabs"],
+	"permissions": ["storage"],
+	"host_permissions": ["*://*.youtube.com/*", "*://gemini.google.com/*"],
+	"options_page": "options.html",
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self'"
+	},
 	"content_scripts": [
 		{
 			"matches": ["*://*.youtube.com/*"],
 			"js": ["content.js"],
 			"css": ["styles.css"]
+		},
+		{
+			"matches": ["*://gemini.google.com/*"],
+			"js": ["gemini-content.js"]
 		}
 	],
 	"action": {
@@ -26,7 +35,7 @@
 	},
 	"web_accessible_resources": [
 		{
-			"resources": ["icons/icon.svg"],
+			"resources": ["icons/icon.svg", "icons/gemini.svg"],
 			"matches": ["*://*.youtube.com/*"]
 		}
 	]
