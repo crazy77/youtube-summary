@@ -199,33 +199,79 @@
     .reset-btn:hover {
       background-color: #5a6268;
     }
+
+    .language-select {
+      width: 100%;
+      max-width: 300px;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      background-color: white;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .language-select:focus {
+      outline: none;
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+    }
+
+    .checkbox-item label[for="languageSelect"] {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #333;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>🚀 YouTube AI Search 설정</h1>
+    <h1 id="pageTitle">🚀 YouTube AI Search 설정</h1>
+
+    <!-- 언어 설정 섹션 -->
+    <div class="section">
+      <h2 id="languageSettingsTitle">
+        <span class="section-icon">🌍</span>
+        언어 설정
+      </h2>
+      <div class="checkbox-group">
+        <div class="checkbox-item">
+          <label for="languageSelect" id="languageSelectLabel">확장 프로그램 언어:</label>
+          <select id="languageSelect" class="language-select">
+            <option value="auto" id="optionAuto">브라우저 기본 언어 사용</option>
+            <option value="ko" id="optionKo">한국어</option>
+            <option value="en" id="optionEn">English</option>
+          </select>
+        </div>
+        <div class="checkbox-description" id="languageDescription">
+          브라우저 언어와 관계없이 확장 프로그램에서 사용할 언어를 선택할 수 있습니다.
+        </div>
+      </div>
+    </div>
 
     <!-- 검색 버튼 선택 섹션 -->
     <div class="section">
-      <h2>
+      <h2 id="buttonSettingsTitle">
         <span class="section-icon">🔍</span>
         표시할 검색 버튼 선택
       </h2>
       <div class="checkbox-group">
         <div class="checkbox-item">
           <input type="checkbox" id="enableFelo" checked>
-          <label for="enableFelo">Felo 검색 버튼</label>
+          <label for="enableFelo" id="feloLabel">Felo 검색 버튼</label>
         </div>
-        <div class="checkbox-description">
+        <div class="checkbox-description" id="feloDescription">
           Felo AI를 사용한 영상 검색 기능
         </div>
 
         <div class="checkbox-item">
           <input type="checkbox" id="enableGemini" checked>
-          <label for="enableGemini">Gemini 검색 버튼</label>
+          <label for="enableGemini" id="geminiLabel">Gemini 검색 버튼</label>
         </div>
-        <div class="checkbox-description">
+        <div class="checkbox-description" id="geminiDescription">
           Google Gemini를 사용한 영상 분석 기능 (자동 입력 및 전송)
         </div>
       </div>
@@ -233,18 +279,18 @@
 
     <!-- 프롬프트 설정 섹션 -->
     <div class="section">
-      <h2>
+      <h2 id="promptSettingsTitle">
         <span class="section-icon">💬</span>
         AI 프롬프트 설정
       </h2>
       <div class="prompt-group">
         <div class="prompt-item">
-          <label for="geminiPrompt">
+          <label for="geminiPrompt" id="geminiPromptLabel">
             Gemini 프롬프트
             <button type="button" class="reset-btn" id="resetGeminiBtn">기본값 복원</button>
           </label>
           <textarea id="geminiPrompt" placeholder="Gemini에서 사용할 프롬프트를 입력하세요..."></textarea>
-          <div class="default-values">
+          <div class="default-values" id="promptInfo">
             💡 기본값: "해당 영상을 단계별로 디테일하고 자세히 정리"<br>
             📝 {VIDEO_URL}은 자동으로 영상 링크로 치환됩니다.
           </div>

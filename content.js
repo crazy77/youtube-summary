@@ -49,14 +49,13 @@ const CONFIG = {
 		buttonContainer: "ai-buttons-container"
 	},
 	GEMINI: {
-		baseUrl: "https://gemini.google.com/app",
-		prompt: "해당 영상을 단계별로 디테일하고 자세히 정리"
+		baseUrl: "https://gemini.google.com/app"
 	},
-	// 기본 설정값
+	// 기본 설정값 (i18n 메시지로 런타임에 설정됨)
 	DEFAULT_SETTINGS: {
 		enableFelo: true,
 		enableGemini: true,
-		geminiPrompt: "해당 영상을 단계별로 디테일하고 자세히 정리"
+		geminiPrompt: null // 런타임에 i18n으로 설정됨
 	}
 };
 
@@ -79,14 +78,23 @@ let state = {
  */
 async function loadUserSettings() {
 	try {
+		// 기본 프롬프트를 i18n으로 설정
+		const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+		
+		const defaultSettings = {
+			enableFelo: CONFIG.DEFAULT_SETTINGS.enableFelo,
+			enableGemini: CONFIG.DEFAULT_SETTINGS.enableGemini,
+			geminiPrompt: defaultGeminiPrompt
+		};
+		
 		let result;
 		// sync storage 먼저 시도
 		try {
-			result = await chrome.storage.sync.get(CONFIG.DEFAULT_SETTINGS);
+			result = await chrome.storage.sync.get(defaultSettings);
 		} catch (syncError) {
 			// local storage로 백업 시도
 			try {
-				result = await chrome.storage.local.get(CONFIG.DEFAULT_SETTINGS);
+				result = await chrome.storage.local.get(defaultSettings);
 			} catch (localError) {
 				throw localError;
 			}
@@ -94,28 +102,93 @@ async function loadUserSettings() {
 		
 		// 결과 병합 및 유효성 검사
 		state.settings = {
-			enableFelo: result.enableFelo !== undefined ? result.enableFelo : CONFIG.DEFAULT_SETTINGS.enableFelo,
-			enableGemini: result.enableGemini !== undefined ? result.enableGemini : CONFIG.DEFAULT_SETTINGS.enableGemini,
-			geminiPrompt: result.geminiPrompt || CONFIG.DEFAULT_SETTINGS.geminiPrompt
+			enableFelo: result.enableFelo !== undefined ? result.enableFelo : defaultSettings.enableFelo,
+			enableGemini: result.enableGemini !== undefined ? result.enableGemini : defaultSettings.enableGemini,
+			geminiPrompt: result.geminiPrompt || defaultSettings.geminiPrompt
 		};
 		
 		return state.settings;
 	} catch (error) {
 		console.warn("[Felo] Failed to load settings, using defaults:", error);
-		state.settings = { ...CONFIG.DEFAULT_SETTINGS };
+		const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+		state.settings = {
+			enableFelo: CONFIG.DEFAULT_SETTINGS.enableFelo,
+			enableGemini: CONFIG.DEFAULT_SETTINGS.enableGemini,
+			geminiPrompt: defaultGeminiPrompt
+		};
 		return state.settings;
 	}
 }
 
 /**
- * Get localized message with fallback
+ * Get localized message with fallback and user language preference
  */
 function getI18nMessage(key, fallback = '') {
 	try {
+		// 사용자가 선택한 언어가 있는지 확인
+		const userLanguage = localStorage.getItem('userSelectedLanguage');
+		
+		if (userLanguage && userLanguage !== 'auto') {
+			// 사용자가 특정 언어를 선택한 경우, 해당 언어의 메시지를 가져오기 시도
+			const messages = getMessagesForLanguage(userLanguage);
+			if (messages && messages[key] && messages[key].message) {
+				return messages[key].message;
+			}
+		}
+		
+		// 기본 Chrome i18n 사용
 		return chrome.i18n.getMessage(key) || fallback;
 	} catch (e) {
 		console.warn(`[Felo] Failed to get i18n message for key: ${key}`, e);
 		return fallback;
+	}
+}
+
+/**
+ * 특정 언어의 메시지를 가져오는 함수 (content script용)
+ */
+function getMessagesForLanguage(lang) {
+	try {
+		// 필요한 메시지들만 하드코딩 (content script에서 사용되는 메시지들)
+		const messages = {
+			'ko': {
+				'iconAltText': { 'message': 'Felo Search 아이콘' },
+				'fallbackButtonText': { 'message': '🔍felo' },
+				'buttonText': { 'message': 'felo' },
+				'geminiIconAltText': { 'message': 'Gemini Search 아이콘' },
+				'geminiFallbackButtonText': { 'message': '🤖gemini' },
+				'geminiButtonText': { 'message': 'gemini' },
+				'geminiProcessing': { 'message': '처리중...' },
+				'geminiAutoInputFailed': { 'message': '자동 입력에 실패했습니다. 클립보드에 복사된 내용을 수동으로 붙여넣어 주세요.' },
+				'geminiPromptFailed': { 'message': '프롬프트를 처리할 수 없습니다. 수동으로 복사해주세요:' },
+				'errorNoUrl': { 'message': '이 버튼에 사용할 수 있는 URL이 없습니다' },
+				'errorIconLoad': { 'message': '아이콘 로드 실패:' },
+				'errorIconUrl': { 'message': '아이콘 URL 오류:' },
+				'errorInsertButton': { 'message': '버튼 삽입 오류:' },
+				'defaultGeminiPrompt': { 'message': '해당 영상을 단계별로 디테일하고 자세히 정리' }
+			},
+			'en': {
+				'iconAltText': { 'message': 'Felo Search Icon' },
+				'fallbackButtonText': { 'message': '🔍felo' },
+				'buttonText': { 'message': 'felo' },
+				'geminiIconAltText': { 'message': 'Gemini Search Icon' },
+				'geminiFallbackButtonText': { 'message': '🤖gemini' },
+				'geminiButtonText': { 'message': 'gemini' },
+				'geminiProcessing': { 'message': 'Processing...' },
+				'geminiAutoInputFailed': { 'message': 'Auto-input failed. Please manually paste the copied content.' },
+				'geminiPromptFailed': { 'message': 'Cannot process prompt. Please copy manually:' },
+				'errorNoUrl': { 'message': 'No URL available for this button' },
+				'errorIconLoad': { 'message': 'Failed to load icon:' },
+				'errorIconUrl': { 'message': 'Error getting icon URL:' },
+				'errorInsertButton': { 'message': 'Error inserting buttons:' },
+				'defaultGeminiPrompt': { 'message': 'Please organize this video step by step in detail' }
+			}
+		};
+		
+		return messages[lang];
+	} catch (error) {
+		console.warn('[Felo] Failed to get messages for language:', lang, error);
+		return null;
 	}
 }
 

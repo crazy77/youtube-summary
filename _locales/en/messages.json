@@ -122,5 +122,49 @@
 	"optionsPromptMaxLength": {
 		"message": "Prompt can be up to 1000 characters long.",
 		"description": "Warning message for prompt length limit."
+	},
+	"defaultGeminiPrompt": {
+		"message": "Please organize this video step by step in detail",
+		"description": "Default prompt to use with Gemini."
+	},
+	"optionsLanguageSettings": {
+		"message": "Language Settings",
+		"description": "Language settings section title."
+	},
+	"optionsLanguageSelect": {
+		"message": "Extension Language:",
+		"description": "Language selection label."
+	},
+	"optionsLanguageChanged": {
+		"message": "Language changed. Page will refresh.",
+		"description": "Language change success message."
+	},
+	"optionsLanguageAuto": {
+		"message": "Use browser default language",
+		"description": "Language selection option - auto select."
+	},
+	"optionsLanguageKo": {
+		"message": "한국어",
+		"description": "Language selection option - Korean."
+	},
+	"optionsLanguageEn": {
+		"message": "English",
+		"description": "Language selection option - English."
+	},
+	"optionsLanguageDescription": {
+		"message": "You can select the language to use in the extension regardless of your browser language.",
+		"description": "Language settings section description."
+	},
+	"optionsFeloDescription": {
+		"message": "Video search function using Felo AI",
+		"description": "Felo button description."
+	},
+	"optionsGeminiDescription": {
+		"message": "Video analysis function using Google Gemini (auto input and submit)",
+		"description": "Gemini button description."
+	},
+	"optionsPromptSettings": {
+		"message": "AI Prompt Settings",
+		"description": "Prompt settings section title."
 	}
 }

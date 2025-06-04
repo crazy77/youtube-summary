@@ -122,5 +122,49 @@
 	"optionsPromptMaxLength": {
 		"message": "프롬프트는 최대 1000자까지 입력 가능합니다.",
 		"description": "프롬프트 길이 제한 메시지입니다."
+	},
+	"defaultGeminiPrompt": {
+		"message": "해당 영상을 단계별로 디테일하고 자세히 정리",
+		"description": "Gemini에서 사용할 기본 프롬프트입니다."
+	},
+	"optionsLanguageSettings": {
+		"message": "언어 설정",
+		"description": "언어 설정 섹션 제목입니다."
+	},
+	"optionsLanguageSelect": {
+		"message": "확장 프로그램 언어:",
+		"description": "언어 선택 라벨입니다."
+	},
+	"optionsLanguageChanged": {
+		"message": "언어가 변경되었습니다. 페이지가 새로고침됩니다.",
+		"description": "언어 변경 성공 메시지입니다."
+	},
+	"optionsLanguageAuto": {
+		"message": "브라우저 기본 언어 사용",
+		"description": "언어 선택 옵션 - 자동 선택입니다."
+	},
+	"optionsLanguageKo": {
+		"message": "한국어",
+		"description": "언어 선택 옵션 - 한국어입니다."
+	},
+	"optionsLanguageEn": {
+		"message": "English",
+		"description": "언어 선택 옵션 - 영어입니다."
+	},
+	"optionsLanguageDescription": {
+		"message": "브라우저 언어와 관계없이 확장 프로그램에서 사용할 언어를 선택할 수 있습니다.",
+		"description": "언어 설정 섹션 설명입니다."
+	},
+	"optionsFeloDescription": {
+		"message": "Felo AI를 사용한 영상 검색 기능",
+		"description": "Felo 버튼 설명입니다."
+	},
+	"optionsGeminiDescription": {
+		"message": "Google Gemini를 사용한 영상 분석 기능 (자동 입력 및 전송)",
+		"description": "Gemini 버튼 설명입니다."
+	},
+	"optionsPromptSettings": {
+		"message": "AI 프롬프트 설정",
+		"description": "프롬프트 설정 섹션 제목입니다."
 	}
 }

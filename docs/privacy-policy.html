@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개인정보처리방침 - YouTube AI Search</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #1a73e8;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 1.1em;
+    }
+
+    .language-toggle {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .language-toggle button {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      margin: 0 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .language-toggle button.active {
+      background: #0f4c8b;
+    }
+
+    h2 {
+      color: #1a73e8;
+      border-bottom: 2px solid #e3f2fd;
+      padding-bottom: 5px;
+      margin-top: 30px;
+    }
+
+    h3 {
+      color: #555;
+      margin-top: 25px;
+    }
+
+    .highlight {
+      background-color: #e3f2fd;
+      padding: 15px;
+      border-radius: 5px;
+      border-left: 4px solid #1a73e8;
+      margin: 15px 0;
+    }
+
+    .contact-info {
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 5px;
+      margin-top: 30px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .effective-date {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-bottom: 25px;
+    }
+
+    .language-content {
+      display: none;
+    }
+
+    .language-content.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>개인정보처리방침</h1>
+    <div class="subtitle">YouTube AI Search Extension</div>
+
+    <div class="language-toggle">
+      <button onclick="showLanguage('ko')" id="btn-ko" class="active">한국어</button>
+      <button onclick="showLanguage('en')" id="btn-en">English</button>
+    </div>
+
+    <!-- 한국어 버전 -->
+    <div id="content-ko" class="language-content active">
+      <div class="effective-date">시행일: 2025년 6월 4일</div>
+
+      <div class="highlight">
+        <strong>요약:</strong> YouTube AI Search 확장 프로그램은 개인정보를 수집하지 않습니다. 사용자가 설정한 옵션 정보만을 브라우저 로컬에 저장하며, 외부로 전송하지 않습니다.
+      </div>
+
+      <div class="section">
+        <h2>1. 개인정보 수집 및 이용</h2>
+        <h3>1.1 수집하는 정보</h3>
+        <p>본 확장 프로그램은 <strong>개인정보를 수집하지 않습니다</strong>. 다음 정보만을 로컬에 저장합니다:</p>
+        <ul>
+          <li>Felo/Gemini 버튼 활성화 설정 (true/false)</li>
+          <li>Gemini 프롬프트 커스터마이징 텍스트</li>
+          <li>확장 프로그램 언어 설정</li>
+        </ul>
+
+        <h3>1.2 정보 사용 목적</h3>
+        <ul>
+          <li>사용자 맞춤 버튼 표시</li>
+          <li>사용자 지정 프롬프트 저장</li>
+          <li>선호 언어로 확장 프로그램 표시</li>
+          <li>YouTube에서 Gemini로 프롬프트 자동 전달</li>
+        </ul>
+
+        <h3>1.3 정보 저장 위치</h3>
+        <p>모든 설정 정보는 <strong>사용자의 브라우저 로컬 저장소</strong>에만 저장되며, 외부 서버로 전송되지 않습니다.</p>
+      </div>
+
+      <div class="section">
+        <h2>2. 정보 보안</h2>
+        <ul>
+          <li>Chrome 브라우저의 보안 정책을 준수합니다</li>
+          <li>암호화된 Chrome Storage API를 사용합니다</li>
+          <li>네트워크를 통한 데이터 전송이 없습니다</li>
+          <li>사용자 데이터는 로컬에서만 처리됩니다</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>3. 제3자 정보 공유</h2>
+        <p><strong>본 확장 프로그램은 어떠한 정보도 제3자와 공유하지 않습니다.</strong></p>
+        <ul>
+          <li>개인정보 수집하지 않음</li>
+          <li>외부 서버로 데이터 전송하지 않음</li>
+          <li>광고 네트워크 연동하지 않음</li>
+          <li>분석 도구 사용하지 않음</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>4. 외부 서비스 연동</h2>
+        <h3>4.1 Felo AI</h3>
+        <p>Felo 버튼 클릭 시, 사용자를 Felo AI 웹사이트로 이동시킵니다. YouTube 영상 URL만 전달되며, 개인정보는 전송되지 않습니다.</p>
+
+        <h3>4.2 Google Gemini</h3>
+        <p>Gemini 버튼 클릭 시, 사용자를 Gemini 웹사이트로 이동시키고 프롬프트를 자동 입력합니다. 영상 URL과 사용자 설정 프롬프트만 전달됩니다.</p>
+      </div>
+
+      <div class="section">
+        <h2>5. 사용자 권리</h2>
+        <ul>
+          <li><strong>설정 변경:</strong> 옵션 페이지에서 언제든 설정 변경 가능</li>
+          <li><strong>데이터 삭제:</strong> 확장 프로그램 제거 시 모든 데이터 자동 삭제</li>
+          <li><strong>투명성:</strong> 오픈소스 코드로 동작 방식 확인 가능</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>6. 쿠키 및 추적</h2>
+        <p>본 확장 프로그램은:</p>
+        <ul>
+          <li>쿠키를 설정하지 않습니다</li>
+          <li>사용자 행동을 추적하지 않습니다</li>
+          <li>브라우징 히스토리에 접근하지 않습니다</li>
+          <li>웹사이트 내용을 읽거나 수정하지 않습니다</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>7. 아동 개인정보 보호</h2>
+        <p>본 확장 프로그램은 만 13세 미만 아동을 대상으로 하지 않으며, 고의로 아동의 개인정보를 수집하지 않습니다.</p>
+      </div>
+
+      <div class="section">
+        <h2>8. 개인정보처리방침 변경</h2>
+        <p>본 방침의 변경 시, Chrome 웹스토어를 통해 공지하며, 중요한 변경사항은 확장 프로그램 업데이트 노트에 명시합니다.</p>
+      </div>
+    </div>
+
+    <!-- English Version -->
+    <div id="content-en" class="language-content">
+      <div class="effective-date">Effective Date: December 19, 2024</div>
+
+      <div class="highlight">
+        <strong>Summary:</strong> YouTube AI Search extension does not collect personal information. It only stores
+        user-configured settings locally in the browser and does not transmit them externally.
+      </div>
+
+      <div class="section">
+        <h2>1. Information Collection and Use</h2>
+        <h3>1.1 Information We Collect</h3>
+        <p>This extension <strong>does not collect personal information</strong>. It only stores the following locally:
+        </p>
+        <ul>
+          <li>Felo/Gemini button enable/disable settings (true/false)</li>
+          <li>Custom Gemini prompt text</li>
+          <li>Extension language preference</li>
+        </ul>
+
+        <h3>1.2 How We Use Information</h3>
+        <ul>
+          <li>Display customized buttons based on user preferences</li>
+          <li>Save user-defined prompts</li>
+          <li>Display extension in preferred language</li>
+          <li>Auto-transfer prompts from YouTube to Gemini</li>
+        </ul>
+
+        <h3>1.3 Information Storage</h3>
+        <p>All settings are stored only in <strong>your browser's local storage</strong> and are not transmitted to
+          external servers.</p>
+      </div>
+
+      <div class="section">
+        <h2>2. Information Security</h2>
+        <ul>
+          <li>Complies with Chrome browser security policies</li>
+          <li>Uses encrypted Chrome Storage API</li>
+          <li>No network data transmission</li>
+          <li>User data processed locally only</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>3. Third-Party Information Sharing</h2>
+        <p><strong>This extension does not share any information with third parties.</strong></p>
+        <ul>
+          <li>No personal information collection</li>
+          <li>No data transmission to external servers</li>
+          <li>No advertising network integration</li>
+          <li>No analytics tools used</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>4. External Service Integration</h2>
+        <h3>4.1 Felo AI</h3>
+        <p>When clicking the Felo button, users are redirected to the Felo AI website. Only the YouTube video URL is
+          passed; no personal information is transmitted.</p>
+
+        <h3>4.2 Google Gemini</h3>
+        <p>When clicking the Gemini button, users are redirected to the Gemini website with auto-input functionality.
+          Only the video URL and user-configured prompt are passed.</p>
+      </div>
+
+      <div class="section">
+        <h2>5. User Rights</h2>
+        <ul>
+          <li><strong>Settings Modification:</strong> Change settings anytime through the options page</li>
+          <li><strong>Data Deletion:</strong> All data automatically deleted when extension is uninstalled</li>
+          <li><strong>Transparency:</strong> Open-source code allows verification of functionality</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>6. Cookies and Tracking</h2>
+        <p>This extension:</p>
+        <ul>
+          <li>Does not set cookies</li>
+          <li>Does not track user behavior</li>
+          <li>Does not access browsing history</li>
+          <li>Does not read or modify website content</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>7. Children's Privacy Protection</h2>
+        <p>This extension is not intended for children under 13 and does not knowingly collect personal information from
+          children.</p>
+      </div>
+
+      <div class="section">
+        <h2>8. Privacy Policy Changes</h2>
+        <p>Changes to this policy will be announced through the Chrome Web Store, with significant changes noted in
+          extension update notes.</p>
+      </div>
+    </div>
+
+    <div class="contact-info">
+      <h2>연락처 / Contact Information</h2>
+      <p><strong>개발자 / Developer:</strong> [Your Name/Company]</p>
+      <p><strong>이메일 / Email:</strong> [your-email@example.com]</p>
+      <p><strong>GitHub:</strong> <a
+          href="https://github.com/[your-username]/youtube-ai-search">https://github.com/[your-username]/youtube-ai-search</a>
+      </p>
+      <p><strong>Chrome 웹스토어 / Chrome Web Store:</strong> [Extension URL]</p>
+    </div>
+  </div>
+
+  <script>
+    function showLanguage(lang) {
+      // Hide all content
+      document.querySelectorAll('.language-content').forEach(content => {
+        content.classList.remove('active');
+      });
+
+      // Remove active class from buttons
+      document.querySelectorAll('.language-toggle button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Show selected content
+      document.getElementById('content-' + lang).classList.add('active');
+      document.getElementById('btn-' + lang).classList.add('active');
+    }
+  </script>
+</body>
+
+</html>
