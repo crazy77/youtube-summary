@@ -32,6 +32,23 @@ const CONFIG = {
 			"#secondary",
 			"#secondary ytd-watch-next-secondary-results-renderer"
 		],
+		// Ad containers to skip
+		adContainers: [
+			"ytd-ad-slot-renderer",
+			"ytd-in-feed-ad-layout-renderer",
+			"ytd-promoted-video-renderer",
+			"ytd-display-ad-renderer",
+			"ytd-action-companion-ad-renderer",
+			"ytd-promoted-sparkles-web-renderer",
+			"ytd-ad",
+			"[class*='ad-']",
+			"[id*='ad-']",
+			".ad-container",
+			"#ad-badge",
+			".badge-style-type-ad",
+			"ytd-ad-badge-supported-renderer",
+			".ytd-ad-badge-supported-renderer"
+		],
 		// More comprehensive video link selectors
 		standardVideoLinks: [
 			"a#video-title",
@@ -229,6 +246,21 @@ function debounce(func, wait) {
 }
 
 /**
+ * Determine if element or its ancestors are ads
+ */
+function isAdElement(element) {
+    try {
+        if (!element) return false;
+        const adSel = CONFIG.SELECTORS.adContainers.join(", ");
+        if (element.matches && element.matches(adSel)) return true;
+        const adAncestor = element.closest && element.closest(adSel);
+        return !!adAncestor;
+    } catch (_) {
+        return false;
+    }
+}
+
+/**
  * Determine if an element is visible in the DOM
  */
 function isElementVisible(element) {
@@ -313,6 +345,11 @@ function analyzeElement(targetElement) {
 	let baseElement = null;
 	let elementType = "unknown";
 
+	// Skip ad containers early
+	if (isAdElement(targetElement)) {
+		return { elementType: "unknown", baseElement: null };
+	}
+
     if (targetElement.matches("ytd-reel-video-renderer, ytd-reel-item-renderer")) {
 		elementType = "shortsReel";
 		baseElement = targetElement;
@@ -372,6 +409,10 @@ function analyzeElement(targetElement) {
 	// Fallback: generic containers with video links on Home/Search
 	if (elementType === "unknown") {
 		try {
+			// Skip ad-looking containers in fallback path too
+			if (isAdElement(targetElement)) {
+				return { elementType: "unknown", baseElement: null };
+			}
 			const hasVideoLink = targetElement.querySelector && (
 				targetElement.querySelector(CONFIG.SELECTORS.standardVideoLinks) ||
 				targetElement.querySelector("a[href*='/watch'], a[href*='/shorts/']")
@@ -790,6 +831,11 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 	if (state.processedElements.has(targetElement)) {
 		return;
 	}
+
+	// Skip ad containers
+	if (isAdElement(targetElement)) {
+		return;
+	}
 	
 	// Additional check: see if element has our data attribute
 	if (targetElement.dataset.feloProcessed === 'true') {
@@ -906,11 +952,12 @@ async function processAllElements() {
         const elements = document.querySelectorAll(potentialElementsSelector);
 		
 		// Filter out already processed elements
-		const unprocessedElements = Array.from(elements).filter(el => 
-			!state.processedElements.has(el) && 
-			el.dataset.feloProcessed !== 'true' && 
-			el.offsetParent !== null
-		);
+            const unprocessedElements = Array.from(elements).filter(el => 
+            !state.processedElements.has(el) && 
+            el.dataset.feloProcessed !== 'true' && 
+            el.offsetParent !== null &&
+            !isAdElement(el)
+        );
 		
 		for (const element of unprocessedElements) {
 			addButtonToElement(element, false);
@@ -922,11 +969,12 @@ async function processAllElements() {
 		for (const container of sidebarContainers) {
 			// Method 1: Look for standard video renderer elements
 			const sidebarVideos = container.querySelectorAll(potentialElementsSelector);
-			const unprocessedSidebarVideos = Array.from(sidebarVideos).filter(el => 
-				!state.processedElements.has(el) && 
-				el.dataset.feloProcessed !== 'true' && 
-				el.offsetParent !== null
-			);
+        const unprocessedSidebarVideos = Array.from(sidebarVideos).filter(el => 
+            !state.processedElements.has(el) && 
+            el.dataset.feloProcessed !== 'true' && 
+            el.offsetParent !== null &&
+            !isAdElement(el)
+        );
 			
 			for (const video of unprocessedSidebarVideos) {
 				addButtonToElement(video, false);
@@ -948,7 +996,7 @@ async function processAllElements() {
 					}
 					
 					const videoLinks = el.querySelectorAll('a[href*="/watch?v="], a[href*="/shorts/"]');
-					if (videoLinks.length > 0) {
+                    if (videoLinks.length > 0 && !isAdElement(el)) {
 						// Find the most appropriate container for this video
 						// Usually it's the element that contains both thumbnail and title
 						let videoContainer = el;
@@ -968,7 +1016,7 @@ async function processAllElements() {
 							searchDepth++;
 						}
 						
-						if (!state.processedElements.has(videoContainer)) {
+                        if (!state.processedElements.has(videoContainer) && !isAdElement(videoContainer)) {
 							elementsWithVideoLinks.add(videoContainer);
 						}
 					}
@@ -991,7 +1039,7 @@ async function processAllElements() {
             const processedContainers = new Set();
             for (const link of linkNodes) {
                 const container = link.closest('ytd-rich-item-renderer, ytd-video-renderer, ytd-compact-video-renderer, ytd-rich-grid-media, yt-lockup-view-model, [class*="lockup"], [class*="contents"], [id*="contents"], div');
-                if (!container || processedContainers.has(container)) continue;
+                if (!container || processedContainers.has(container) || isAdElement(container)) continue;
                 processedContainers.add(container);
                 if (!state.processedElements.has(container) && isElementVisible(container) && !container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
                     addButtonToElement(container, false);
@@ -1458,7 +1506,7 @@ function forceCheckWatchPage() {
 			const processedContainers = new Set();
 			allLinks.forEach((link, index) => {
 				let container = link.closest('div, ytd-compact-video-renderer, ytd-video-renderer');
-				if (container && !processedContainers.has(container) && !container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
+                if (container && !processedContainers.has(container) && !container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`) && !isAdElement(container)) {
 					processedContainers.add(container);
 					addButtonToElement(container, false);
 				}
