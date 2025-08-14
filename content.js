@@ -6,12 +6,15 @@ const CONFIG = {
 	SELECTORS: {
 		potentialElements: [
 			"ytd-rich-grid-media",
-			"ytd-video-renderer", 
+			"ytd-video-renderer",
 			"ytd-compact-video-renderer",
 			"ytd-grid-video-renderer",
 			"ytd-playlist-panel-video-renderer",
 			"ytd-reel-video-renderer",
+			"ytd-reel-item-renderer",
 			"ytd-rich-item-renderer",
+			"ytd-rich-grid-row",
+			"yt-lockup-view-model",
 			// Additional containers that might contain videos
 			"ytd-compact-autoplay-renderer",
 			"ytd-mini-guide-entry-renderer",
@@ -26,13 +29,32 @@ const CONFIG = {
 			"ytd-item-section-renderer",
 			"#secondary #secondary-inner",
 			"#related",
-			"#secondary"
+			"#secondary",
+			"#secondary ytd-watch-next-secondary-results-renderer"
 		],
 		// More comprehensive video link selectors
-		standardVideoLinks: "a#video-title, #video-title-link, a[href*='/watch?v='], a[href*='/shorts/']",
-		shortsLockupLinks: "a.shortsLockupViewModelHostEndpoint",
-		shortsReelLinks: 'a#endpoint[href*="/shorts/"], .reel-player-overlay-action a[href*="/shorts/"]',
-		watchTitles: "h1.ytd-watch-metadata > yt-formatted-string, #video-title.ytd-watch-metadata, #info-contents h1 yt-formatted-string"
+		standardVideoLinks: [
+			"a#video-title",
+			"a#video-title-link",
+			"h3 a#video-title",
+			"h3 a#video-title-link",
+			"a#thumbnail[href*='/watch']",
+			"a.yt-simple-endpoint[href*='/watch']",
+			"a[href^='/watch']",
+			"a[href*='/watch?v=']",
+			"a[href*='/shorts/']"
+		].join(", "),
+		shortsLockupLinks: "a.shortsLockupViewModelHostEndpoint, a#thumbnail[href*='/shorts/']",
+		shortsReelLinks: 'a#endpoint[href*="/shorts/"], .reel-player-overlay-action a[href*="/shorts/"], a#thumbnail[href*="/shorts/"]',
+		watchTitles: [
+			"h1.ytd-watch-metadata > yt-formatted-string",
+			"#video-title.ytd-watch-metadata",
+			"#info-contents h1 yt-formatted-string",
+			"ytd-watch-metadata h1",
+			"#title h1",
+			"h1.title",
+			"h1 > yt-formatted-string"
+		].join(", ")
 	},
 	TIMING: {
 		debounceMs: 500,
@@ -79,7 +101,7 @@ let state = {
 async function loadUserSettings() {
 	try {
 		// 기본 프롬프트를 i18n으로 설정
-		const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+		const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "요약 및 핵심 내용 정리");
 		
 		const defaultSettings = {
 			enableFelo: CONFIG.DEFAULT_SETTINGS.enableFelo,
@@ -110,7 +132,7 @@ async function loadUserSettings() {
 		return state.settings;
 	} catch (error) {
 		console.warn("[Felo] Failed to load settings, using defaults:", error);
-		const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+		const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "요약 및 핵심 내용 정리");
 		state.settings = {
 			enableFelo: CONFIG.DEFAULT_SETTINGS.enableFelo,
 			enableGemini: CONFIG.DEFAULT_SETTINGS.enableGemini,
@@ -165,7 +187,7 @@ function getMessagesForLanguage(lang) {
 				'errorIconLoad': { 'message': '아이콘 로드 실패:' },
 				'errorIconUrl': { 'message': '아이콘 URL 오류:' },
 				'errorInsertButton': { 'message': '버튼 삽입 오류:' },
-				'defaultGeminiPrompt': { 'message': '해당 영상을 단계별로 디테일하고 자세히 정리' }
+				'defaultGeminiPrompt': { 'message': '요약 및 핵심 내용 정리' }
 			},
 			'en': {
 				'iconAltText': { 'message': 'Felo Search Icon' },
@@ -181,7 +203,7 @@ function getMessagesForLanguage(lang) {
 				'errorIconLoad': { 'message': 'Failed to load icon:' },
 				'errorIconUrl': { 'message': 'Error getting icon URL:' },
 				'errorInsertButton': { 'message': 'Error inserting buttons:' },
-				'defaultGeminiPrompt': { 'message': 'Please organize this video step by step in detail' }
+				'defaultGeminiPrompt': { 'message': 'Summarize and extract key points' }
 			}
 		};
 		
@@ -210,10 +232,10 @@ function debounce(func, wait) {
  * Check if YouTube page has finished loading
  */
 function isYouTubePageReady() {
-	// Check document ready state
-	if (document.readyState !== 'complete') {
-		return false;
-	}
+    // Check document ready state (accept 'interactive' or 'complete' for SPA)
+    if (document.readyState === 'loading') {
+        return false;
+    }
 
 	// Check for main YouTube containers
 	const mainContainer = document.querySelector('ytd-app, #content, #primary');
@@ -268,10 +290,10 @@ function analyzeElement(targetElement) {
 	let baseElement = null;
 	let elementType = "unknown";
 
-	if (targetElement.matches("ytd-reel-video-renderer")) {
+    if (targetElement.matches("ytd-reel-video-renderer, ytd-reel-item-renderer")) {
 		elementType = "shortsReel";
 		baseElement = targetElement;
-	} else if (targetElement.matches("ytm-shorts-lockup-view-model")) {
+    } else if (targetElement.matches("ytm-shorts-lockup-view-model, yt-lockup-view-model")) {
 		elementType = "shortsLockup";
 		baseElement = targetElement;
 	} else if (targetElement.matches("ytd-rich-item-renderer")) {
@@ -290,7 +312,7 @@ function analyzeElement(targetElement) {
 				baseElement = gridMedia;
 			}
 		}
-	} else if (targetElement.matches("ytd-rich-grid-media")) {
+    } else if (targetElement.matches("ytd-rich-grid-media")) {
 		const innerShorts = targetElement.querySelector("ytm-shorts-lockup-view-model");
 		if (innerShorts) {
 			elementType = "shortsLockup";
@@ -424,8 +446,8 @@ function findButtonPlacement(baseElement, elementType) {
 
 	try {
 		if (elementType === "watchTitle") {
-			container = baseElement.closest("#title, #info-contents > ytd-video-primary-info-renderer > #container > #info > #info-text") ||
-						document.querySelector("#info-contents #info-text");
+			container = baseElement.closest("#title, ytd-watch-metadata #title, #info-contents > ytd-video-primary-info-renderer > #container > #info > #info-text") ||
+						document.querySelector("#info-contents #info-text, ytd-watch-metadata #title");
 		} else if (elementType === "shortsLockup") {
 			const subhead = baseElement.querySelector("div.shortsLockupViewModelHostMetadataSubhead");
 			if (subhead) {
@@ -627,7 +649,7 @@ function createGeminiButton(elementType, videoUrl) {
 		event.stopPropagation();
 		
 		if (videoUrl) {
-			const userPrompt = state.settings.geminiPrompt || CONFIG.GEMINI.prompt;
+			const userPrompt = state.settings.geminiPrompt || getI18nMessage("defaultGeminiPrompt", "Summarize and extract key points");
 			const fullPrompt = `${videoUrl}\n\n${userPrompt}`;
 			
 			try {

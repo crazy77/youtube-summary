@@ -96,36 +96,38 @@
 }
 
 /* YouTube 쇼츠 풀스크린 모드 스타일 */
-ytd-app[is-shorts-page][fullscreen] #reel-video-renderer {
-  width: 100vw;
-}
+@media (orientation: portrait) {
+  ytd-app[is-shorts-page][fullscreen] #reel-video-renderer {
+    width: 100vw;
+  }
 
-ytd-app[is-shorts-page][fullscreen] .player-controls.style-scope.ytd-reel-video-renderer {
-  width: 100vw;
-}
+  ytd-app[is-shorts-page][fullscreen] .player-controls.style-scope.ytd-reel-video-renderer {
+    width: 100vw;
+  }
 
-ytd-app[is-shorts-page][fullscreen] #experiment-overlay {
-  width: 100vw;
-}
+  ytd-app[is-shorts-page][fullscreen] #experiment-overlay {
+    width: 100vw;
+  }
 
-ytd-app[is-shorts-page][fullscreen] #experiment-overlay > .ytd-reel-video-renderer {
-  width: 100%;
-}
+  ytd-app[is-shorts-page][fullscreen] #experiment-overlay > .ytd-reel-video-renderer {
+    width: 100%;
+  }
 
-ytd-app[is-shorts-page][fullscreen] #player {
-  width: 100%;
-}
+  ytd-app[is-shorts-page][fullscreen] #player {
+    width: 100%;
+  }
 
-ytd-app[is-shorts-page][fullscreen] #experiment-overlay .action-container {
-  margin-bottom: 50px;
-}
-ytd-app[is-shorts-page][fullscreen]:hover #experiment-overlay .action-container {
-  display: flex !important;
-  opacity: 1;
-  transition: opacity 0.2s ease-in-out;
-}
+  ytd-app[is-shorts-page][fullscreen] #experiment-overlay .action-container {
+    margin-bottom: 50px;
+  }
+  ytd-app[is-shorts-page][fullscreen]:hover #experiment-overlay .action-container {
+    display: flex !important;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
 
-ytd-app[is-shorts-page][fullscreen] #experiment-overlay .action-container {
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+  ytd-app[is-shorts-page][fullscreen] #experiment-overlay .action-container {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
 }
