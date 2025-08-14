@@ -124,7 +124,7 @@
 		"description": "프롬프트 길이 제한 메시지입니다."
 	},
 	"defaultGeminiPrompt": {
-		"message": "해당 영상을 단계별로 디테일하고 자세히 정리",
+		"message": "요약 및 핵심 내용 정리",
 		"description": "Gemini에서 사용할 기본 프롬프트입니다."
 	},
 	"optionsLanguageSettings": {

@@ -124,7 +124,7 @@
 		"description": "Warning message for prompt length limit."
 	},
 	"defaultGeminiPrompt": {
-		"message": "Please organize this video step by step in detail",
+		"message": "Summarize and extract key points",
 		"description": "Default prompt to use with Gemini."
 	},
 	"optionsLanguageSettings": {

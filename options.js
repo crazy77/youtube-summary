@@ -46,7 +46,7 @@ function getMessagesForLanguage(lang) {
                 'optionsMinimumButtonRequired': { 'message': '최소 하나의 검색 버튼은 활성화되어야 합니다.' },
                 'optionsResetSuccess': { 'message': 'Gemini 프롬프트가 기본값으로 복원되었습니다.' },
                 'optionsPromptMaxLength': { 'message': '프롬프트는 최대 1000자까지 입력 가능합니다.' },
-                'defaultGeminiPrompt': { 'message': '해당 영상을 단계별로 디테일하고 자세히 정리' },
+                'defaultGeminiPrompt': { 'message': '요약 및 핵심 내용 정리' },
                 'optionsLanguageSettings': { 'message': '언어 설정' },
                 'optionsLanguageSelect': { 'message': '확장 프로그램 언어:' },
                 'optionsLanguageChanged': { 'message': '언어가 변경되었습니다. 페이지가 새로고침됩니다.' },
@@ -75,7 +75,7 @@ function getMessagesForLanguage(lang) {
                 'optionsMinimumButtonRequired': { 'message': 'At least one search button must be enabled.' },
                 'optionsResetSuccess': { 'message': 'Gemini prompt has been reset to default.' },
                 'optionsPromptMaxLength': { 'message': 'Prompt can be up to 1000 characters long.' },
-                'defaultGeminiPrompt': { 'message': 'Please organize this video step by step in detail' },
+                'defaultGeminiPrompt': { 'message': 'Summarize and extract key points' },
                 'optionsLanguageSettings': { 'message': 'Language Settings' },
                 'optionsLanguageSelect': { 'message': 'Extension Language:' },
                 'optionsLanguageChanged': { 'message': 'Language changed. Page will refresh.' },
@@ -118,7 +118,7 @@ const STORAGE_KEYS = {
 async function loadSettings() {
     try {
         // 기본 프롬프트를 i18n으로 설정
-        const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+        const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "요약 및 핵심 내용 정리");
         
         const defaultSettings = {
             enableFelo: DEFAULT_SETTINGS.enableFelo,
@@ -150,7 +150,7 @@ async function loadSettings() {
         showStatusMessage(getI18nMessage('optionsLoadError', '설정을 불러오는 중 오류가 발생했습니다.'), 'error');
         
         // 에러 시 기본값으로 설정
-        const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+        const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "요약 및 핵심 내용 정리");
         document.getElementById('enableFelo').checked = DEFAULT_SETTINGS.enableFelo;
         document.getElementById('enableGemini').checked = DEFAULT_SETTINGS.enableGemini;
         document.getElementById('geminiPrompt').value = defaultGeminiPrompt;
@@ -166,7 +166,7 @@ async function loadSettings() {
  */
 async function saveSettings() {
     try {
-        const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+        const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "요약 및 핵심 내용 정리");
         const settings = {
             enableFelo: document.getElementById('enableFelo').checked,
             enableGemini: document.getElementById('enableGemini').checked,
@@ -220,7 +220,7 @@ async function saveSettings() {
  * Gemini 프롬프트를 기본값으로 복원
  */
 function resetGeminiPrompt() {
-    const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "해당 영상을 단계별로 디테일하고 자세히 정리");
+    const defaultGeminiPrompt = getI18nMessage("defaultGeminiPrompt", "요약 및 핵심 내용 정리");
     document.getElementById('geminiPrompt').value = defaultGeminiPrompt;
     showStatusMessage(getI18nMessage('optionsResetSuccess', 'Gemini 프롬프트가 기본값으로 복원되었습니다.'), 'success');
     setTimeout(() => {
@@ -446,7 +446,7 @@ function updateI18nTexts() {
     
     const promptInfo = document.getElementById('promptInfo');
     if (promptInfo) {
-        const defaultPrompt = getI18nMessage('defaultGeminiPrompt', '해당 영상을 단계별로 디테일하고 자세히 정리');
+        const defaultPrompt = getI18nMessage('defaultGeminiPrompt', '요약 및 핵심 내용 정리');
         promptInfo.innerHTML = `💡 ${getI18nMessage('optionsDefaultValue', '기본값')}: "${defaultPrompt}"<br>📝 ${getI18nMessage('optionsVariableInfo', '{VIDEO_URL}은 자동으로 영상 링크로 치환됩니다.')}`;
     }
     
