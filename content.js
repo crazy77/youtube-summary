@@ -293,30 +293,47 @@ function analyzeElement(targetElement) {
     if (targetElement.matches("ytd-reel-video-renderer, ytd-reel-item-renderer")) {
 		elementType = "shortsReel";
 		baseElement = targetElement;
-    } else if (targetElement.matches("ytm-shorts-lockup-view-model, yt-lockup-view-model")) {
+    } else if (targetElement.matches("ytm-shorts-lockup-view-model")) {
 		elementType = "shortsLockup";
 		baseElement = targetElement;
-	} else if (targetElement.matches("ytd-rich-item-renderer")) {
-		const shortsLockup = targetElement.querySelector("ytm-shorts-lockup-view-model");
-		const gridMedia = targetElement.querySelector("ytd-rich-grid-media");
-		if (shortsLockup) {
+    } else if (targetElement.matches("yt-lockup-view-model")) {
+		const hasShorts = !!targetElement.querySelector("a[href*='/shorts/']");
+		const hasWatch = !!targetElement.querySelector("a[href*='/watch']");
+		if (hasShorts && !hasWatch) {
 			elementType = "shortsLockup";
-			baseElement = shortsLockup;
-		} else if (gridMedia) {
-			const innerShorts = gridMedia.querySelector("ytm-shorts-lockup-view-model");
-			if (innerShorts) {
+		} else {
+			elementType = "standardVideo";
+		}
+		baseElement = targetElement;
+	} else if (targetElement.matches("ytd-rich-item-renderer")) {
+		const gridMedia = targetElement.querySelector("ytd-rich-grid-media");
+		const lockup = targetElement.querySelector("ytm-shorts-lockup-view-model, yt-lockup-view-model");
+		if (gridMedia) {
+			// Prefer grid media for standard videos; detect shorts within
+			const innerShortsLink = gridMedia.querySelector("a[href*='/shorts/']");
+			if (innerShortsLink) {
 				elementType = "shortsLockup";
-				baseElement = innerShorts;
+				baseElement = gridMedia;
 			} else {
 				elementType = "standardVideo";
 				baseElement = gridMedia;
 			}
+		} else if (lockup) {
+			const hasShorts = !!lockup.querySelector("a[href*='/shorts/']");
+			const hasWatch = !!lockup.querySelector("a[href*='/watch']");
+			if (hasShorts && !hasWatch) {
+				elementType = "shortsLockup";
+				baseElement = lockup;
+			} else {
+				elementType = "standardVideo";
+				baseElement = lockup;
+			}
 		}
     } else if (targetElement.matches("ytd-rich-grid-media")) {
-		const innerShorts = targetElement.querySelector("ytm-shorts-lockup-view-model");
-		if (innerShorts) {
+		const shortsLink = targetElement.querySelector("a[href*='/shorts/']");
+		if (shortsLink) {
 			elementType = "shortsLockup";
-			baseElement = innerShorts;
+			baseElement = targetElement;
 		} else {
 			elementType = "standardVideo";
 			baseElement = targetElement;
@@ -521,6 +538,16 @@ function findButtonPlacement(baseElement, elementType) {
 		}
 	} catch (error) {
 		console.warn(`[Felo] Error finding button placement for ${elementType}:`, error);
+	}
+
+	// Ultimate fallback: if no container found, use title-related parent or base element
+	if (!container) {
+		try {
+			const titleLink = baseElement && baseElement.querySelector ? baseElement.querySelector(CONFIG.SELECTORS.standardVideoLinks) : null;
+			container = (titleLink && (titleLink.closest("#info, #details, #meta, .meta, #dismissible") || titleLink.parentNode)) || baseElement;
+		} catch (e) {
+			container = baseElement;
+		}
 	}
 
 	return { container, insertionPoint };
@@ -913,6 +940,22 @@ async function processAllElements() {
 					if (!videoEl.querySelector(`.${CONFIG.CLASSES.button}`)) {
 						addButtonToElement(videoEl, false);
 					}
+				}
+			}
+		}
+
+		// Home/Search aggressive fallback: scan for any elements with video links when none of our
+		// known containers are present or yielded no buttons
+		const hasAnyButtons = document.querySelector(`.${CONFIG.CLASSES.button}, .${CONFIG.CLASSES.geminiButton}`);
+		if (!hasAnyButtons) {
+			const linkNodes = Array.from(document.querySelectorAll("a[href*='/watch'], a[href*='/shorts/']"));
+			const processedContainers = new Set();
+			for (const link of linkNodes) {
+				const container = link.closest('ytd-rich-item-renderer, ytd-video-renderer, ytd-compact-video-renderer, ytd-rich-grid-media, yt-lockup-view-model, [class*="lockup"], [class*="contents"], [id*="contents"], div');
+				if (!container || processedContainers.has(container)) continue;
+				processedContainers.add(container);
+				if (!state.processedElements.has(container) && container.offsetParent !== null && !container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
+					addButtonToElement(container, false);
 				}
 			}
 		}
