@@ -229,10 +229,31 @@ function debounce(func, wait) {
 }
 
 /**
+ * Determine if an element is visible in the DOM
+ */
+function isElementVisible(element) {
+    try {
+        if (!element) return false;
+        // Fast path for detached or display: none
+        if (!element.isConnected) return false;
+        const style = window.getComputedStyle(element);
+        if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+            // opacity 0 can be used for transitions; still treat as invisible container
+            // but children might be visible. We only use this as a hint.
+        }
+        // offsetParent can be null for position: fixed or display: contents; use rects instead
+        const rects = element.getClientRects();
+        return rects && rects.length > 0 && rects[0].width > 0 && rects[0].height > 0;
+    } catch (_) {
+        return false;
+    }
+}
+
+/**
  * Check if YouTube page has finished loading
  */
 function isYouTubePageReady() {
-    // Check document ready state (accept 'interactive' or 'complete' for SPA)
+    // Accept 'interactive' or 'complete' to start scanning earlier on SPA
     if (document.readyState === 'loading') {
         return false;
     }
@@ -256,8 +277,10 @@ function isYouTubePageReady() {
 		return !!document.querySelector('ytd-shorts, #shorts-player');
 	} else {
 		// Home/Browse pages - check for main content grid
-		const grid = document.querySelector('ytd-rich-grid-renderer, ytd-two-column-browse-results-renderer');
-		return !!grid;
+        // Consider non-custom DOM fallback when custom elements are not defined yet
+        const grid = document.querySelector('ytd-rich-grid-renderer, ytd-two-column-browse-results-renderer');
+        const anyLinks = document.querySelector('a[href*="/watch"], a[href*="/shorts/"]');
+        return !!(grid || anyLinks);
 	}
 }
 
@@ -864,7 +887,7 @@ async function processAllElements() {
 
 		// Process main video elements
 		const potentialElementsSelector = CONFIG.SELECTORS.potentialElements.join(", ");
-		const elements = document.querySelectorAll(potentialElementsSelector);
+        const elements = document.querySelectorAll(potentialElementsSelector);
 		
 		// Filter out already processed elements
 		const unprocessedElements = Array.from(elements).filter(el => 
@@ -944,21 +967,21 @@ async function processAllElements() {
 			}
 		}
 
-		// Home/Search aggressive fallback: scan for any elements with video links when none of our
-		// known containers are present or yielded no buttons
-		const hasAnyButtons = document.querySelector(`.${CONFIG.CLASSES.button}, .${CONFIG.CLASSES.geminiButton}`);
-		if (!hasAnyButtons) {
-			const linkNodes = Array.from(document.querySelectorAll("a[href*='/watch'], a[href*='/shorts/']"));
-			const processedContainers = new Set();
-			for (const link of linkNodes) {
-				const container = link.closest('ytd-rich-item-renderer, ytd-video-renderer, ytd-compact-video-renderer, ytd-rich-grid-media, yt-lockup-view-model, [class*="lockup"], [class*="contents"], [id*="contents"], div');
-				if (!container || processedContainers.has(container)) continue;
-				processedContainers.add(container);
-				if (!state.processedElements.has(container) && container.offsetParent !== null && !container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
-					addButtonToElement(container, false);
-				}
-			}
-		}
+        // Home/Search aggressive fallback: scan for any elements with video links when none of our
+        // known containers are present or yielded no buttons
+        const hasAnyButtons = document.querySelector(`.${CONFIG.CLASSES.button}, .${CONFIG.CLASSES.geminiButton}`);
+        if (!hasAnyButtons) {
+            const linkNodes = Array.from(document.querySelectorAll("a[href*='/watch'], a[href*='/shorts/']"));
+            const processedContainers = new Set();
+            for (const link of linkNodes) {
+                const container = link.closest('ytd-rich-item-renderer, ytd-video-renderer, ytd-compact-video-renderer, ytd-rich-grid-media, yt-lockup-view-model, [class*="lockup"], [class*="contents"], [id*="contents"], div');
+                if (!container || processedContainers.has(container)) continue;
+                processedContainers.add(container);
+                if (!state.processedElements.has(container) && isElementVisible(container) && !container.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
+                    addButtonToElement(container, false);
+                }
+            }
+        }
 
 		// Handle watch page title separately
 		const mainTitleElement = document.querySelector(CONFIG.SELECTORS.watchTitles);
