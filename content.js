@@ -369,6 +369,22 @@ function analyzeElement(targetElement) {
 		baseElement = targetElement;
 	}
 
+	// Fallback: generic containers with video links on Home/Search
+	if (elementType === "unknown") {
+		try {
+			const hasVideoLink = targetElement.querySelector && (
+				targetElement.querySelector(CONFIG.SELECTORS.standardVideoLinks) ||
+				targetElement.querySelector("a[href*='/watch'], a[href*='/shorts/']")
+			);
+			if (hasVideoLink) {
+				elementType = "standardVideo";
+				baseElement = targetElement;
+			}
+		} catch (_) {
+			// ignore
+		}
+	}
+
 	return { elementType, baseElement };
 }
 
