@@ -11,7 +11,6 @@
   align-items: center; 
   justify-content: center; 
   gap: 4px; 
-  z-index: 9999;
   text-decoration: none !important;
   color: black !important;
 }
@@ -55,7 +54,6 @@
   align-items: center; 
   justify-content: center; 
   gap: 4px; 
-  z-index: 9999;
   text-decoration: none !important;
   color: #1a73e8 !important;
   font-family: inherit;
