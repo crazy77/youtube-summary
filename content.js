@@ -575,12 +575,11 @@ function findButtonPlacement(baseElement, elementType) {
 			if (baseElement.matches("yt-lockup-view-model")) {
 				const metadataRoot = baseElement.querySelector(".yt-lockup-view-model__metadata") || baseElement;
 				const textContainer = metadataRoot.querySelector(".yt-lockup-metadata-view-model__text-container");
-				const metadataBlock = textContainer?.querySelector(".yt-lockup-metadata-view-model__metadata") ||
-					metadataRoot.querySelector(".yt-lockup-metadata-view-model__metadata");
 
-				container = textContainer || metadataRoot;
-				if (metadataBlock) {
-					insertionPoint = metadataBlock.nextSibling;
+				// Place buttons below the text container (previous div) to avoid truncation
+				container = metadataRoot;
+				if (textContainer) {
+					insertionPoint = textContainer.nextSibling;
 				}
 			}
 
