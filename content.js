@@ -572,8 +572,11 @@ function findButtonPlacement(baseElement, elementType) {
 						baseElement.querySelector(".reel-player-overlay-actions, #actions");
 		} else if (elementType === "standardVideo") {
 			// New lockup view model (sidebar/recommendations)
-			if (baseElement.matches("yt-lockup-view-model")) {
-				const metadataRoot = baseElement.querySelector(".yt-lockup-view-model__metadata") || baseElement;
+			const lockupContainer = baseElement.matches("yt-lockup-view-model")
+				? baseElement
+				: (baseElement.closest ? baseElement.closest("yt-lockup-view-model") : null);
+			if (lockupContainer) {
+				const metadataRoot = lockupContainer.querySelector(".yt-lockup-view-model__metadata") || lockupContainer;
 				const metadataViewModel = metadataRoot.querySelector("yt-lockup-metadata-view-model");
 
 				// Place buttons as a direct child under metadata root (below metadata block)
