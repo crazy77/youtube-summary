@@ -93,6 +93,14 @@
   flex-wrap: wrap !important;
 }
 
+/* Sidebar compact renderer: keep buttons under metadata, not in same row */
+ytd-compact-video-renderer #details .ai-buttons-container {
+  width: 100% !important;
+  flex-basis: 100% !important;
+  align-self: flex-start !important;
+  grid-column: 1 / -1 !important;
+}
+
 /* YouTube 쇼츠 풀스크린 모드 스타일 */
 @media (orientation: portrait) {
   ytd-app[is-shorts-page][fullscreen] #reel-video-renderer {
