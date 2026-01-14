@@ -274,6 +274,16 @@ function isAdElement(element) {
     }
 }
 
+function isSidebarElement(element) {
+	try {
+		if (!element) return false;
+		const sidebarSel = CONFIG.SELECTORS.sidebarContainers.join(", ");
+		return !!(element.closest && element.closest(sidebarSel));
+	} catch (_) {
+		return false;
+	}
+}
+
 /**
  * Determine if an element is visible in the DOM
  */
@@ -878,6 +888,11 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 
 	// Skip ad containers
 	if (isAdElement(targetElement)) {
+		return;
+	}
+
+	// Skip sidebar (related/recommendations) on watch pages
+	if (window.location.href.includes('/watch') && isSidebarElement(targetElement)) {
 		return;
 	}
 
