@@ -673,9 +673,9 @@ function createFeloButton(elementType, videoUrl) {
 	const button = document.createElement("a");
 	button.classList.add(CONFIG.CLASSES.button);
 	
-	// Set href to Felo search URL
+	// Set href to Perplexity search URL
 	if (videoUrl) {
-		button.href = `https://felo.ai/search?q=${encodeURIComponent(videoUrl)}`;
+		button.href = `https://perplexity.ai/search?q=${encodeURIComponent(videoUrl)}`;
 		button.target = "_blank"; // Open in new tab
 		button.rel = "noopener noreferrer"; // Security best practice
 	} else {
