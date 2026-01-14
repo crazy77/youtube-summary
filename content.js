@@ -284,6 +284,23 @@ function isSidebarElement(element) {
 	}
 }
 
+function isLeftNavElement(element) {
+	try {
+		if (!element) return false;
+		const navSelectors = [
+			"ytd-guide-renderer",
+			"ytd-mini-guide-renderer",
+			"ytd-guide-section-renderer",
+			"ytd-guide-entry-renderer",
+			"#guide",
+			"tp-yt-app-drawer"
+		].join(", ");
+		return !!(element.closest && element.closest(navSelectors));
+	} catch (_) {
+		return false;
+	}
+}
+
 /**
  * Determine if an element is visible in the DOM
  */
@@ -893,6 +910,11 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 
 	// Skip sidebar (related/recommendations) on watch pages
 	if (window.location.href.includes('/watch') && isSidebarElement(targetElement)) {
+		return;
+	}
+
+	// Skip left navigation menu (guide/shortcuts)
+	if (isLeftNavElement(targetElement)) {
 		return;
 	}
 
