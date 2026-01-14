@@ -164,6 +164,9 @@ async function loadUserSettings() {
  */
 function getI18nMessage(key, fallback = '') {
 	try {
+		if (!chrome?.runtime?.id || !chrome?.i18n?.getMessage) {
+			return fallback;
+		}
 		// 사용자가 선택한 언어가 있는지 확인
 		const userLanguage = localStorage.getItem('userSelectedLanguage');
 		
@@ -178,8 +181,19 @@ function getI18nMessage(key, fallback = '') {
 		// 기본 Chrome i18n 사용
 		return chrome.i18n.getMessage(key) || fallback;
 	} catch (e) {
-		console.warn(`[Felo] Failed to get i18n message for key: ${key}`, e);
+		// Extension context invalidated can happen on reload; keep UI usable.
 		return fallback;
+	}
+}
+
+function safeGetRuntimeUrl(path) {
+	try {
+		if (!chrome?.runtime?.id || !chrome?.runtime?.getURL) {
+			return null;
+		}
+		return chrome.runtime.getURL(path);
+	} catch (_) {
+		return null;
 	}
 }
 
@@ -698,23 +712,27 @@ function createFeloButton(elementType, videoUrl) {
 	try {
 		// Create icon
 		const icon = document.createElement("img");
-		icon.src = chrome.runtime.getURL("icons/perplexity.png");
-		icon.alt = getI18nMessage("iconAltText", "Perplexity Search Icon");
-		icon.classList.add(CONFIG.CLASSES.icon);
+		const iconUrl = safeGetRuntimeUrl("icons/perplexity.png");
+		if (iconUrl) {
+			icon.src = iconUrl;
+			icon.alt = getI18nMessage("iconAltText", "Perplexity Search Icon");
+			icon.classList.add(CONFIG.CLASSES.icon);
+		}
 
 		// Handle icon loading error
 		icon.onerror = () => {
-			console.warn(getI18nMessage("errorIconLoad", "Failed to load icon:"), icon.src);
 			button.innerHTML = "";
 			button.appendChild(document.createTextNode(getI18nMessage("fallbackButtonText", "🔍perplexity")));
 		};
 
 		// Assemble button content
-		button.appendChild(icon);
+		if (iconUrl) {
+			button.appendChild(icon);
+		}
 		button.appendChild(document.createTextNode(` ${getI18nMessage("buttonText", "perplexity")}`));
 
 	} catch (error) {
-		console.error(getI18nMessage("errorIconUrl", "Error getting icon URL:"), error);
+		// Keep UI usable even if extension context is invalidated
 		button.textContent = getI18nMessage("fallbackButtonText", "🔍perplexity");
 	}
 
@@ -737,23 +755,27 @@ function createGeminiButton(elementType, videoUrl) {
 	try {
 		// Create icon
 		const icon = document.createElement("img");
-		icon.src = chrome.runtime.getURL("icons/gemini.svg");
+		const iconUrl = safeGetRuntimeUrl("icons/gemini.svg");
+		if (iconUrl) {
+			icon.src = iconUrl;
+		}
 		icon.alt = getI18nMessage("geminiIconAltText", "Gemini Search Icon");
 		icon.classList.add(CONFIG.CLASSES.geminiIcon);
 
 		// Handle icon loading error
 		icon.onerror = () => {
-			console.warn(getI18nMessage("errorIconLoad", "Failed to load icon:"), icon.src);
 			button.innerHTML = "";
 			button.appendChild(document.createTextNode(getI18nMessage("geminiFallbackButtonText", "🤖gemini")));
 		};
 
 		// Assemble button content
-		button.appendChild(icon);
+		if (iconUrl) {
+			button.appendChild(icon);
+		}
 		button.appendChild(document.createTextNode(` ${getI18nMessage("geminiButtonText", "gemini")}`))
 
 	} catch (error) {
-		console.error(getI18nMessage("errorIconUrl", "Error getting icon URL:"), error);
+		// Keep UI usable even if extension context is invalidated
 		button.textContent = getI18nMessage("geminiFallbackButtonText", "🤖gemini");
 	}
 
