@@ -559,20 +559,27 @@ function findButtonPlacement(baseElement, elementType) {
 		} else if (elementType === "standardVideo") {
 			// Check if this is a compact video renderer (commonly used in sidebar)
 			if (baseElement.matches("ytd-compact-video-renderer")) {
-				// For compact videos, try specific compact video selectors first
+				// For compact videos, place buttons under metadata to avoid truncating title/info
+				const details = baseElement.querySelector("#details");
+				const metadataLine = (details && details.querySelector("#metadata-line")) || baseElement.querySelector("#metadata-line");
+				if (details) {
+					container = details;
+					insertionPoint = metadataLine ? metadataLine.nextSibling : null;
+				}
+
+				// If details are not found, try specific compact video selectors
 				const compactSelectors = [
-					"#metadata-line", // Most common in compact videos
 					"#meta",
-					"#details",
 					".details",
-					"#video-title", // Sometimes the title container itself
-					":scope > #content" // Direct child content
+					":scope > #content"
 				];
 				
-				for (const selector of compactSelectors) {
-					container = baseElement.querySelector(selector);
-					if (container) {
-						break;
+				if (!container) {
+					for (const selector of compactSelectors) {
+						container = baseElement.querySelector(selector);
+						if (container) {
+							break;
+						}
 					}
 				}
 				
@@ -835,6 +842,19 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 	// Skip ad containers
 	if (isAdElement(targetElement)) {
 		return;
+	}
+
+	// Skip if this element or its closest video container already has buttons
+	if (targetElement.querySelector && targetElement.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
+		return;
+	}
+	const closestVideoContainer = targetElement.closest && targetElement.closest(
+		'ytd-compact-video-renderer, ytd-video-renderer, ytd-rich-item-renderer, ytd-rich-grid-media, yt-lockup-view-model, ytd-grid-video-renderer, ytd-playlist-panel-video-renderer, ytd-reel-video-renderer, ytd-reel-item-renderer'
+	);
+	if (closestVideoContainer && closestVideoContainer !== targetElement) {
+		if (closestVideoContainer.querySelector(`.${CONFIG.CLASSES.buttonContainer}`)) {
+			return;
+		}
 	}
 	
 	// Additional check: see if element has our data attribute
