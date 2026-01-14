@@ -571,8 +571,21 @@ function findButtonPlacement(baseElement, elementType) {
 			container = baseElement.querySelector("#metadata-line, #factoids, .reel-video-meta-info") ||
 						baseElement.querySelector(".reel-player-overlay-actions, #actions");
 		} else if (elementType === "standardVideo") {
+			// New lockup view model (sidebar/recommendations)
+			if (baseElement.matches("yt-lockup-view-model")) {
+				const metadataRoot = baseElement.querySelector(".yt-lockup-view-model__metadata") || baseElement;
+				const textContainer = metadataRoot.querySelector(".yt-lockup-metadata-view-model__text-container");
+				const metadataBlock = textContainer?.querySelector(".yt-lockup-metadata-view-model__metadata") ||
+					metadataRoot.querySelector(".yt-lockup-metadata-view-model__metadata");
+
+				container = textContainer || metadataRoot;
+				if (metadataBlock) {
+					insertionPoint = metadataBlock.nextSibling;
+				}
+			}
+
 			// Check if this is a compact video renderer (commonly used in sidebar)
-			if (baseElement.matches("ytd-compact-video-renderer")) {
+			if (!container && baseElement.matches("ytd-compact-video-renderer")) {
 				// For compact videos, place buttons under metadata to avoid truncating title/info
 				const details = baseElement.querySelector("#details");
 				const metadataLine = (details && details.querySelector("#metadata-line")) || baseElement.querySelector("#metadata-line");
