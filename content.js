@@ -191,9 +191,9 @@ function getMessagesForLanguage(lang) {
 		// 필요한 메시지들만 하드코딩 (content script에서 사용되는 메시지들)
 		const messages = {
 			'ko': {
-				'iconAltText': { 'message': 'Felo Search 아이콘' },
-				'fallbackButtonText': { 'message': '🔍felo' },
-				'buttonText': { 'message': 'felo' },
+				'iconAltText': { 'message': 'Perplexity Search 아이콘' },
+				'fallbackButtonText': { 'message': '🔍perplexity' },
+				'buttonText': { 'message': 'perplexity' },
 				'geminiIconAltText': { 'message': 'Gemini Search 아이콘' },
 				'geminiFallbackButtonText': { 'message': '🤖gemini' },
 				'geminiButtonText': { 'message': 'gemini' },
@@ -207,9 +207,9 @@ function getMessagesForLanguage(lang) {
 				'defaultGeminiPrompt': { 'message': '요약 및 핵심 내용 정리' }
 			},
 			'en': {
-				'iconAltText': { 'message': 'Felo Search Icon' },
-				'fallbackButtonText': { 'message': '🔍felo' },
-				'buttonText': { 'message': 'felo' },
+				'iconAltText': { 'message': 'Perplexity Search Icon' },
+				'fallbackButtonText': { 'message': '🔍perplexity' },
+				'buttonText': { 'message': 'perplexity' },
 				'geminiIconAltText': { 'message': 'Gemini Search Icon' },
 				'geminiFallbackButtonText': { 'message': '🤖gemini' },
 				'geminiButtonText': { 'message': 'gemini' },
@@ -692,23 +692,23 @@ function createFeloButton(elementType, videoUrl) {
 		// Create icon
 		const icon = document.createElement("img");
 		icon.src = chrome.runtime.getURL("icons/icon.svg");
-		icon.alt = getI18nMessage("iconAltText", "Felo Search Icon");
+		icon.alt = getI18nMessage("iconAltText", "Perplexity Search Icon");
 		icon.classList.add(CONFIG.CLASSES.icon);
 
 		// Handle icon loading error
 		icon.onerror = () => {
 			console.warn(getI18nMessage("errorIconLoad", "Failed to load icon:"), icon.src);
 			button.innerHTML = "";
-			button.appendChild(document.createTextNode(getI18nMessage("fallbackButtonText", "🔍felo")));
+			button.appendChild(document.createTextNode(getI18nMessage("fallbackButtonText", "🔍perplexity")));
 		};
 
 		// Assemble button content
 		button.appendChild(icon);
-		button.appendChild(document.createTextNode(` ${getI18nMessage("buttonText", "felo")}`));
+		button.appendChild(document.createTextNode(` ${getI18nMessage("buttonText", "perplexity")}`));
 
 	} catch (error) {
 		console.error(getI18nMessage("errorIconUrl", "Error getting icon URL:"), error);
-		button.textContent = getI18nMessage("fallbackButtonText", "🔍felo");
+		button.textContent = getI18nMessage("fallbackButtonText", "🔍perplexity");
 	}
 
 	return button;

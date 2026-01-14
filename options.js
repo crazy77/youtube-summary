@@ -34,7 +34,7 @@ function getMessagesForLanguage(lang) {
             'ko': {
                 'optionsTitle': { 'message': 'YouTube AI Search 설정' },
                 'optionsButtonSettings': { 'message': '표시할 검색 버튼 선택' },
-                'optionsEnableFelo': { 'message': 'Felo 검색 버튼' },
+                'optionsEnableFelo': { 'message': 'Perplexity 검색 버튼' },
                 'optionsEnableGemini': { 'message': 'Gemini 검색 버튼' },
                 'optionsGeminiPrompt': { 'message': 'Gemini 프롬프트' },
                 'optionsGeminiPromptPlaceholder': { 'message': 'Gemini에서 사용할 프롬프트를 입력하세요...' },
@@ -54,7 +54,7 @@ function getMessagesForLanguage(lang) {
                 'optionsLanguageKo': { 'message': '한국어' },
                 'optionsLanguageEn': { 'message': 'English' },
                 'optionsLanguageDescription': { 'message': '브라우저 언어와 관계없이 확장 프로그램에서 사용할 언어를 선택할 수 있습니다.' },
-                'optionsFeloDescription': { 'message': 'Felo AI를 사용한 영상 검색 기능' },
+                'optionsFeloDescription': { 'message': 'Perplexity AI를 사용한 영상 검색 기능' },
                 'optionsGeminiDescription': { 'message': 'Google Gemini를 사용한 영상 분석 기능 (자동 입력 및 전송)' },
                 'optionsPromptSettings': { 'message': 'AI 프롬프트 설정' },
                 'optionsDefaultValue': { 'message': '기본값' },
@@ -63,7 +63,7 @@ function getMessagesForLanguage(lang) {
             'en': {
                 'optionsTitle': { 'message': 'YouTube AI Search Settings' },
                 'optionsButtonSettings': { 'message': 'Select Search Buttons to Display' },
-                'optionsEnableFelo': { 'message': 'Felo Search Button' },
+                'optionsEnableFelo': { 'message': 'Perplexity Search Button' },
                 'optionsEnableGemini': { 'message': 'Gemini Search Button' },
                 'optionsGeminiPrompt': { 'message': 'Gemini Prompt' },
                 'optionsGeminiPromptPlaceholder': { 'message': 'Enter the prompt to use with Gemini...' },
@@ -83,7 +83,7 @@ function getMessagesForLanguage(lang) {
                 'optionsLanguageKo': { 'message': '한국어' },
                 'optionsLanguageEn': { 'message': 'English' },
                 'optionsLanguageDescription': { 'message': 'You can select the language to use in the extension regardless of your browser language.' },
-                'optionsFeloDescription': { 'message': 'Video search function using Felo AI' },
+                'optionsFeloDescription': { 'message': 'Video search function using Perplexity AI' },
                 'optionsGeminiDescription': { 'message': 'Video analysis function using Google Gemini (auto input and submit)' },
                 'optionsPromptSettings': { 'message': 'AI Prompt Settings' },
                 'optionsDefaultValue': { 'message': 'Default' },
@@ -408,12 +408,12 @@ function updateI18nTexts() {
     
     const feloLabel = document.getElementById('feloLabel');
     if (feloLabel) {
-        feloLabel.textContent = getI18nMessage('optionsEnableFelo', 'Felo 검색 버튼');
+        feloLabel.textContent = getI18nMessage('optionsEnableFelo', 'Perplexity 검색 버튼');
     }
     
     const feloDescription = document.getElementById('feloDescription');
     if (feloDescription) {
-        feloDescription.textContent = getI18nMessage('optionsFeloDescription', 'Felo AI를 사용한 영상 검색 기능');
+        feloDescription.textContent = getI18nMessage('optionsFeloDescription', 'Perplexity AI를 사용한 영상 검색 기능');
     }
     
     const geminiLabel = document.getElementById('geminiLabel');

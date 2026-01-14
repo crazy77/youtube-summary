@@ -4,28 +4,28 @@
 		"description": "확장 프로그램의 이름입니다."
 	},
 	"extensionDescription": {
-		"message": "YouTube 영상에 Felo와 Gemini AI 검색 버튼을 추가하여 영상을 스마트하게 분석할 수 있습니다.",
+		"message": "YouTube 영상에 Perplexity와 Gemini AI 검색 버튼을 추가하여 영상을 스마트하게 분석할 수 있습니다.",
 		"description": "확장 프로그램의 설명입니다."
 	},
 	"buttonText": {
-		"message": "felo",
-		"description": "Felo 버튼에 표시될 텍스트입니다."
+		"message": "perplexity",
+		"description": "Perplexity 버튼에 표시될 텍스트입니다."
 	},
 	"geminiButtonText": {
 		"message": "gemini",
 		"description": "Gemini 버튼에 표시될 텍스트입니다."
 	},
 	"iconAltText": {
-		"message": "Felo 검색 아이콘",
-		"description": "Felo 검색 아이콘의 대체 텍스트입니다."
+		"message": "Perplexity 검색 아이콘",
+		"description": "Perplexity 검색 아이콘의 대체 텍스트입니다."
 	},
 	"geminiIconAltText": {
 		"message": "Gemini 검색 아이콘",
 		"description": "Gemini 검색 아이콘의 대체 텍스트입니다."
 	},
 	"fallbackButtonText": {
-		"message": "🔍felo",
-		"description": "Felo 아이콘 로딩 실패 시 버튼에 표시될 텍스트입니다."
+		"message": "🔍perplexity",
+		"description": "Perplexity 아이콘 로딩 실패 시 버튼에 표시될 텍스트입니다."
 	},
 	"geminiFallbackButtonText": {
 		"message": "🤖gemini",
@@ -68,8 +68,8 @@
 		"description": "옵션 페이지의 버튼 설정 섹션 제목입니다."
 	},
 	"optionsEnableFelo": {
-		"message": "Felo 검색 버튼 활성화",
-		"description": "Felo 버튼 활성화 체크박스 라벨입니다."
+		"message": "Perplexity 검색 버튼 활성화",
+		"description": "Perplexity 버튼 활성화 체크박스 라벨입니다."
 	},
 	"optionsEnableGemini": {
 		"message": "Gemini 검색 버튼 활성화",
@@ -156,8 +156,8 @@
 		"description": "언어 설정 섹션 설명입니다."
 	},
 	"optionsFeloDescription": {
-		"message": "Felo AI를 사용한 영상 검색 기능",
-		"description": "Felo 버튼 설명입니다."
+		"message": "Perplexity AI를 사용한 영상 검색 기능",
+		"description": "Perplexity 버튼 설명입니다."
 	},
 	"optionsGeminiDescription": {
 		"message": "Google Gemini를 사용한 영상 분석 기능 (자동 입력 및 전송)",

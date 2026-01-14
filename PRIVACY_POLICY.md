@@ -15,7 +15,7 @@
 #### 1.1 수집하는 정보
 본 확장 프로그램은 **개인정보를 수집하지 않습니다**. 다음 정보만을 로컬에 저장합니다:
 
-- Felo/Gemini 버튼 활성화 설정 (true/false)
+- Perplexity/Gemini 버튼 활성화 설정 (true/false)
 - Gemini 프롬프트 커스터마이징 텍스트
 - 확장 프로그램 언어 설정
 
@@ -44,8 +44,8 @@
 
 ### 4. 외부 서비스 연동
 
-#### 4.1 Felo AI
-Felo 버튼 클릭 시, 사용자를 Felo AI 웹사이트로 이동시킵니다. YouTube 영상 URL만 전달되며, 개인정보는 전송되지 않습니다.
+#### 4.1 Perplexity AI
+Perplexity 버튼 클릭 시, 사용자를 Perplexity AI 웹사이트로 이동시킵니다. YouTube 영상 URL만 전달되며, 개인정보는 전송되지 않습니다.
 
 #### 4.2 Google Gemini
 Gemini 버튼 클릭 시, 사용자를 Gemini 웹사이트로 이동시키고 프롬프트를 자동 입력합니다. 영상 URL과 사용자 설정 프롬프트만 전달됩니다.
@@ -80,7 +80,7 @@ Gemini 버튼 클릭 시, 사용자를 Gemini 웹사이트로 이동시키고 �
 #### 1.1 Information We Collect
 This extension **does not collect personal information**. It only stores the following locally:
 
-- Felo/Gemini button enable/disable settings (true/false)
+- Perplexity/Gemini button enable/disable settings (true/false)
 - Custom Gemini prompt text
 - Extension language preference
 
@@ -109,8 +109,8 @@ All settings are stored only in **your browser's local storage** and are not tra
 
 ### 4. External Service Integration
 
-#### 4.1 Felo AI
-When clicking the Felo button, users are redirected to the Felo AI website. Only the YouTube video URL is passed; no personal information is transmitted.
+#### 4.1 Perplexity AI
+When clicking the Perplexity button, users are redirected to the Perplexity AI website. Only the YouTube video URL is passed; no personal information is transmitted.
 
 #### 4.2 Google Gemini
 When clicking the Gemini button, users are redirected to the Gemini website with auto-input functionality. Only the video URL and user-configured prompt are passed.

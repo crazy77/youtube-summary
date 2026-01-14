@@ -4,28 +4,28 @@
 		"description": "The name of the extension."
 	},
 	"extensionDescription": {
-		"message": "Adds Felo and Gemini AI search buttons to YouTube videos for smart video content analysis.",
+		"message": "Adds Perplexity and Gemini AI search buttons to YouTube videos for smart video content analysis.",
 		"description": "The description of the extension."
 	},
 	"buttonText": {
-		"message": "felo",
-		"description": "Text displayed on the Felo button."
+		"message": "perplexity",
+		"description": "Text displayed on the Perplexity button."
 	},
 	"geminiButtonText": {
 		"message": "gemini",
 		"description": "Text displayed on the Gemini button."
 	},
 	"iconAltText": {
-		"message": "Felo Search Icon",
-		"description": "Alt text for the Felo search icon."
+		"message": "Perplexity Search Icon",
+		"description": "Alt text for the Perplexity search icon."
 	},
 	"geminiIconAltText": {
 		"message": "Gemini Search Icon",
 		"description": "Alt text for the Gemini search icon."
 	},
 	"fallbackButtonText": {
-		"message": "🔍felo",
-		"description": "Text displayed on the Felo button if the icon fails to load."
+		"message": "🔍perplexity",
+		"description": "Text displayed on the Perplexity button if the icon fails to load."
 	},
 	"geminiFallbackButtonText": {
 		"message": "🤖gemini",
@@ -68,8 +68,8 @@
 		"description": "Title of the button settings section in options page."
 	},
 	"optionsEnableFelo": {
-		"message": "Enable Felo Search Button",
-		"description": "Label for the Felo button enable checkbox."
+		"message": "Enable Perplexity Search Button",
+		"description": "Label for the Perplexity button enable checkbox."
 	},
 	"optionsEnableGemini": {
 		"message": "Enable Gemini Search Button",
@@ -156,8 +156,8 @@
 		"description": "Language settings section description."
 	},
 	"optionsFeloDescription": {
-		"message": "Video search function using Felo AI",
-		"description": "Felo button description."
+		"message": "Video search function using Perplexity AI",
+		"description": "Perplexity button description."
 	},
 	"optionsGeminiDescription": {
 		"message": "Video analysis function using Google Gemini (auto input and submit)",

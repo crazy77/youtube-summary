@@ -8,7 +8,7 @@
 
 **사용 근거:**
 - **사용자 설정 저장**: 사용자가 옵션 페이지에서 설정한 다음 정보들을 저장하기 위해 필요합니다:
-  - Felo 검색 버튼 활성화/비활성화 설정
+- Perplexity 검색 버튼 활성화/비활성화 설정
   - Gemini 검색 버튼 활성화/비활성화 설정  
   - Gemini에서 사용할 사용자 정의 프롬프트 텍스트
   - 사용자가 선택한 확장 프로그램 언어 설정
@@ -50,7 +50,7 @@
 
 **Justification:**
 - **User Settings Storage**: Required to save user preferences configured in the options page:
-  - Enable/disable settings for Felo search button
+- Enable/disable settings for Perplexity search button
   - Enable/disable settings for Gemini search button
   - Custom prompt text for Gemini service
   - User-selected extension language preference
