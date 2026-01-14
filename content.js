@@ -942,6 +942,11 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 		return;
 	}
 
+	// Abort if the element is the mini-guide or inside it (safety)
+	if (targetElement.matches("ytd-mini-guide-renderer") || targetElement.closest("ytd-mini-guide-renderer")) {
+		return;
+	}
+
 	// Analyze element
 	const { elementType, baseElement } = useLocationHref 
 		? { elementType: "watchTitle", baseElement: targetElement }
@@ -955,6 +960,11 @@ function addButtonToElement(targetElement, useLocationHref = false) {
 	const { container: buttonContainer, insertionPoint } = findButtonPlacement(baseElement, elementType);
 
 	if (!buttonContainer) {
+		return;
+	}
+
+	// Avoid inserting into guide containers if placement resolved there
+	if (isLeftNavElement(buttonContainer)) {
 		return;
 	}
 
