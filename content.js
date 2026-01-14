@@ -574,12 +574,12 @@ function findButtonPlacement(baseElement, elementType) {
 			// New lockup view model (sidebar/recommendations)
 			if (baseElement.matches("yt-lockup-view-model")) {
 				const metadataRoot = baseElement.querySelector(".yt-lockup-view-model__metadata") || baseElement;
-				const textContainer = metadataRoot.querySelector(".yt-lockup-metadata-view-model__text-container");
+				const metadataViewModel = metadataRoot.querySelector("yt-lockup-metadata-view-model");
 
-				// Place buttons below the text container (previous div) to avoid truncation
+				// Place buttons as a direct child under metadata root (below metadata block)
 				container = metadataRoot;
-				if (textContainer) {
-					insertionPoint = textContainer.nextSibling;
+				if (metadataViewModel) {
+					insertionPoint = metadataViewModel.nextSibling;
 				}
 			}
 

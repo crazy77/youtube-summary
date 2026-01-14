@@ -108,8 +108,8 @@ ytd-compact-video-renderer #details {
   align-items: flex-start !important;
 }
 
-/* New lockup view model in sidebar: keep buttons under metadata text */
-yt-lockup-view-model .yt-lockup-metadata-view-model__text-container .ai-buttons-container {
+/* New lockup view model in sidebar: keep buttons under metadata block */
+yt-lockup-view-model .yt-lockup-view-model__metadata .ai-buttons-container {
   display: flex !important;
   flex-wrap: wrap !important;
   margin-top: 6px !important;
