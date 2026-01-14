@@ -691,7 +691,7 @@ function createFeloButton(elementType, videoUrl) {
 	try {
 		// Create icon
 		const icon = document.createElement("img");
-		icon.src = chrome.runtime.getURL("icons/icon.svg");
+		icon.src = chrome.runtime.getURL("icons/perplexity.png");
 		icon.alt = getI18nMessage("iconAltText", "Perplexity Search Icon");
 		icon.classList.add(CONFIG.CLASSES.icon);
 
