@@ -25,9 +25,15 @@ pnpm compile  # 타입 체크
 - 유튜브 썸네일이나 영상 제목 위에서 우클릭 → **이 영상을 Gemini로 보내기**
 - 영상 재생 페이지에서 우클릭 또는 툴바 아이콘 클릭 → 지금 보는 영상을 보내기
 
+## 프롬프트 설정
+
+기본 프롬프트는 "다음 유튜브 영상의 핵심 내용을 정리해줘." + 영상 주소입니다. 확장 프로그램 아이콘 우클릭 → **옵션**에서 바꿀 수 있고, `{url}` 자리에 영상 주소가 들어갑니다.
+
 ## 구조
 
 - `entrypoints/background.ts` — 우클릭 메뉴, 툴바 아이콘, Gemini 탭 열기
 - `entrypoints/youtube.content/` — 썸네일 제목 옆 Gemini 버튼
 - `entrypoints/gemini.content/` — Gemini 페이지에서 링크를 입력하고 전송
+- `entrypoints/options/` — 프롬프트 설정 화면
+- `utils/settings.ts` — 프롬프트 템플릿 저장·조합
 - `utils/youtube.ts` — 영상 URL 정리 (재생목록·시간 파라미터 제거)
