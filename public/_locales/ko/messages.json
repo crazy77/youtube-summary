@@ -3,7 +3,7 @@
     "message": "YouTube AI Search"
   },
   "extensionDescription": {
-    "message": "유튜브 영상 링크를 클릭 한 번으로 Gemini에 보내고 바로 질문합니다."
+    "message": "유튜브 영상 제목 옆 버튼이나 우클릭 한 번으로 영상을 Gemini에 보내 바로 요약받으세요."
   },
   "actionTitle": {
     "message": "지금 보는 영상을 Gemini로 보내기"

@@ -3,7 +3,7 @@
     "message": "YouTube AI Search"
   },
   "extensionDescription": {
-    "message": "Send any YouTube video link to Gemini in one click."
+    "message": "Send any YouTube video to Gemini with one click from its title or the right-click menu."
   },
   "actionTitle": {
     "message": "Send this video to Gemini"

@@ -1,179 +1,45 @@
-# 개인정보처리방침 / Privacy Policy
-## YouTube AI Search Extension
+# 개인정보처리방침 / Privacy Policy — YouTube AI Search
 
-**시행일 / Effective Date:** 2024년 12월 19일 / December 19, 2024
+**시행일 / Effective date:** 2026-11-19 (v2.0.0)
 
----
+## 한국어
 
-## 한국어 버전
+**YouTube AI Search는 개인정보를 수집하지 않습니다.** 개발자가 운영하는 서버가 없으며, 어떤 데이터도 개발자에게 전송되지 않습니다.
 
-### 📋 요약
-**YouTube AI Search 확장 프로그램은 개인정보를 수집하지 않습니다.** 사용자가 설정한 옵션 정보만을 브라우저 로컬에 저장하며, 외부로 전송하지 않습니다.
+### 저장하는 정보
+- **프롬프트 템플릿**: 옵션 화면에서 직접 바꾼 경우에만 `chrome.storage.sync`에 저장됩니다. 브라우저 계정 동기화가 켜져 있으면 브라우저 제공자(Google/네이버)의 동기화 기능으로 내 다른 기기에 복사됩니다.
+- **전송 대기 중인 프롬프트**: 버튼을 누른 순간부터 Gemini 탭에 입력될 때까지 `chrome.storage.session`(메모리)에 잠깐 보관되고, 입력 직후 또는 탭을 닫으면 삭제됩니다.
 
-### 1. 개인정보 수집 및 이용
+### 페이지 접근
+- **youtube.com**: 영상 제목 옆에 버튼을 표시하고, 누른 영상의 주소를 읽기 위해서만 사용합니다. 시청 기록, 계정 정보, 댓글 등은 읽지 않습니다.
+- **gemini.google.com**: 사용자가 버튼을 눌러 연 Gemini 탭에 프롬프트(설정한 문구 + 영상 주소)를 입력하고 전송하기 위해서만 사용합니다. 대화 내용은 읽지 않습니다.
 
-#### 1.1 수집하는 정보
-본 확장 프로그램은 **개인정보를 수집하지 않습니다**. 다음 정보만을 로컬에 저장합니다:
+### 제3자 제공
+없습니다. 프롬프트는 사용자가 버튼을 누를 때 사용자의 Gemini 계정으로 직접 전송되며, 이후 처리는 [Google 개인정보처리방침](https://policies.google.com/privacy)을 따릅니다. 광고, 분석, 추적 도구를 사용하지 않습니다.
 
-- Perplexity/Gemini 버튼 활성화 설정 (true/false)
-- Gemini 프롬프트 커스터마이징 텍스트
-- 확장 프로그램 언어 설정
+### 삭제
+확장 프로그램을 제거하면 저장된 설정이 모두 삭제됩니다. 옵션 화면의 "기본값으로"를 눌러도 저장된 프롬프트가 지워집니다.
 
-#### 1.2 정보 사용 목적
-- 사용자 맞춤 버튼 표시
-- 사용자 지정 프롬프트 저장
-- 선호 언어로 확장 프로그램 표시
-- YouTube에서 Gemini로 프롬프트 자동 전달
+### 문의
+[GitHub Issues](https://github.com/crazy77/youtube-summary/issues)
 
-#### 1.3 정보 저장 위치
-모든 설정 정보는 **사용자의 브라우저 로컬 저장소**에만 저장되며, 외부 서버로 전송되지 않습니다.
+## English
 
-### 2. 정보 보안
-- Chrome 브라우저의 보안 정책을 준수합니다
-- 암호화된 Chrome Storage API를 사용합니다
-- 네트워크를 통한 데이터 전송이 없습니다
-- 사용자 데이터는 로컬에서만 처리됩니다
+**YouTube AI Search does not collect personal data.** There is no developer-operated server, and no data is ever sent to the developer.
 
-### 3. 제3자 정보 공유
-**본 확장 프로그램은 어떠한 정보도 제3자와 공유하지 않습니다.**
+### What is stored
+- **Prompt template**: saved in `chrome.storage.sync` only if you change it on the options page. If browser sync is on, your browser vendor's sync copies it to your other devices.
+- **Pending prompt**: held in `chrome.storage.session` (memory) from the moment you click until it is typed into the Gemini tab, then deleted immediately or when the tab closes.
 
-- 개인정보 수집하지 않음
-- 외부 서버로 데이터 전송하지 않음
-- 광고 네트워크 연동하지 않음
-- 분석 도구 사용하지 않음
+### Page access
+- **youtube.com**: only to show the button next to video titles and read the address of the video you clicked. Watch history, account data and comments are not read.
+- **gemini.google.com**: only to type and send the prompt (your template + the video address) in the Gemini tab you opened with the button. Conversations are not read.
 
-### 4. 외부 서비스 연동
+### Sharing
+None. The prompt is sent from your own Gemini account when you click, and is then handled under [Google's Privacy Policy](https://policies.google.com/privacy). No ads, analytics or tracking.
 
-#### 4.1 Perplexity AI
-Perplexity 버튼 클릭 시, 사용자를 Perplexity AI 웹사이트로 이동시킵니다. YouTube 영상 URL만 전달되며, 개인정보는 전송되지 않습니다.
+### Deletion
+Uninstalling the extension removes all stored settings. "Reset to default" on the options page also clears the saved prompt.
 
-#### 4.2 Google Gemini
-Gemini 버튼 클릭 시, 사용자를 Gemini 웹사이트로 이동시키고 프롬프트를 자동 입력합니다. 영상 URL과 사용자 설정 프롬프트만 전달됩니다.
-
-### 5. 사용자 권리
-- **설정 변경:** 옵션 페이지에서 언제든 설정 변경 가능
-- **데이터 삭제:** 확장 프로그램 제거 시 모든 데이터 자동 삭제
-- **투명성:** 오픈소스 코드로 동작 방식 확인 가능
-
-### 6. 쿠키 및 추적
-본 확장 프로그램은:
-- 쿠키를 설정하지 않습니다
-- 사용자 행동을 추적하지 않습니다
-- 브라우징 히스토리에 접근하지 않습니다
-- 웹사이트 내용을 읽거나 수정하지 않습니다
-
-### 7. 아동 개인정보 보호
-본 확장 프로그램은 만 13세 미만 아동을 대상으로 하지 않으며, 고의로 아동의 개인정보를 수집하지 않습니다.
-
-### 8. 개인정보처리방침 변경
-본 방침의 변경 시, Chrome 웹스토어를 통해 공지하며, 중요한 변경사항은 확장 프로그램 업데이트 노트에 명시합니다.
-
----
-
-## English Version
-
-### 📋 Summary
-**YouTube AI Search extension does not collect personal information.** It only stores user-configured settings locally in the browser and does not transmit them externally.
-
-### 1. Information Collection and Use
-
-#### 1.1 Information We Collect
-This extension **does not collect personal information**. It only stores the following locally:
-
-- Perplexity/Gemini button enable/disable settings (true/false)
-- Custom Gemini prompt text
-- Extension language preference
-
-#### 1.2 How We Use Information
-- Display customized buttons based on user preferences
-- Save user-defined prompts
-- Display extension in preferred language
-- Auto-transfer prompts from YouTube to Gemini
-
-#### 1.3 Information Storage
-All settings are stored only in **your browser's local storage** and are not transmitted to external servers.
-
-### 2. Information Security
-- Complies with Chrome browser security policies
-- Uses encrypted Chrome Storage API
-- No network data transmission
-- User data processed locally only
-
-### 3. Third-Party Information Sharing
-**This extension does not share any information with third parties.**
-
-- No personal information collection
-- No data transmission to external servers
-- No advertising network integration
-- No analytics tools used
-
-### 4. External Service Integration
-
-#### 4.1 Perplexity AI
-When clicking the Perplexity button, users are redirected to the Perplexity AI website. Only the YouTube video URL is passed; no personal information is transmitted.
-
-#### 4.2 Google Gemini
-When clicking the Gemini button, users are redirected to the Gemini website with auto-input functionality. Only the video URL and user-configured prompt are passed.
-
-### 5. User Rights
-- **Settings Modification:** Change settings anytime through the options page
-- **Data Deletion:** All data automatically deleted when extension is uninstalled
-- **Transparency:** Open-source code allows verification of functionality
-
-### 6. Cookies and Tracking
-This extension:
-- Does not set cookies
-- Does not track user behavior
-- Does not access browsing history
-- Does not read or modify website content
-
-### 7. Children's Privacy Protection
-This extension is not intended for children under 13 and does not knowingly collect personal information from children.
-
-### 8. Privacy Policy Changes
-Changes to this policy will be announced through the Chrome Web Store, with significant changes noted in extension update notes.
-
----
-
-## 연락처 / Contact Information
-
-**개발자 / Developer:** [Your Name/Company]  
-**이메일 / Email:** [your-email@example.com]  
-**GitHub:** [https://github.com/[your-username]/youtube-ai-search](https://github.com/[your-username]/youtube-ai-search)  
-**Chrome 웹스토어 / Chrome Web Store:** [Extension URL]
-
----
-
-## 기술적 세부사항 / Technical Details
-
-### Storage Usage
-```javascript
-// User Settings (stored locally)
-{
-  "enableFelo": boolean,
-  "enableGemini": boolean,
-  "geminiPrompt": string,
-  "userSelectedLanguage": string
-}
-
-// Temporary data (auto-deleted after use)
-{
-  "geminiPrompt": string // For auto-input functionality
-}
-```
-
-### Host Permissions
-- **youtube.com:** Button insertion and URL extraction only
-- **gemini.google.com:** Auto-input functionality only
-
-### Data Flow
-1. User configures settings → Stored locally in browser
-2. User clicks Gemini button → Temporary data transfer to Gemini page
-3. Auto-input completes → Temporary data deleted
-
-### Compliance
-- ✅ GDPR Compliant (no personal data collection)
-- ✅ Chrome Web Store Policies
-- ✅ Children's Online Privacy Protection Act (COPPA)
-- ✅ Minimal permissions principle
-- ✅ Transparent functionality 
+### Contact
+[GitHub Issues](https://github.com/crazy77/youtube-summary/issues)
