@@ -1,0 +1,20 @@
+{
+  "extensionName": {
+    "message": "YouTube AI Search"
+  },
+  "extensionDescription": {
+    "message": "유튜브 영상 링크를 클릭 한 번으로 Gemini에 보내고 바로 질문합니다."
+  },
+  "actionTitle": {
+    "message": "지금 보는 영상을 Gemini로 보내기"
+  },
+  "contextMenuTitle": {
+    "message": "이 영상을 Gemini로 보내기"
+  },
+  "contextMenuPageTitle": {
+    "message": "지금 보는 영상을 Gemini로 보내기"
+  },
+  "sendButtonLabel": {
+    "message": "Gemini로 보내기"
+  }
+}

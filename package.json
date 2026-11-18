@@ -1,0 +1,18 @@
+{
+  "name": "youtube-summary",
+  "description": "YouTube 영상 링크를 클릭 한 번으로 Gemini에 보내는 확장 프로그램",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "compile": "tsc --noEmit",
+    "postinstall": "wxt prepare"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "wxt": "0.21.5"
+  }
+}
