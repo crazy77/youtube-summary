@@ -71,8 +71,10 @@ function findEnabledSendButton(): HTMLButtonElement | null {
   return null;
 }
 
+/** 줄바꿈·공백 차이는 무시하고 비교 (에디터는 줄마다 <p>로 나눈다) */
+const squash = (s: string) => s.replace(/\s+/g, '');
 const hasText = (editor: HTMLElement, text: string) =>
-  (editor.innerText || editor.textContent || '').includes(text);
+  squash(editor.innerText || editor.textContent || '').includes(squash(text));
 
 /**
  * 에디터에 텍스트를 넣는다. 에디터가 실제 사용자 입력처럼 인식하도록
@@ -103,9 +105,14 @@ async function insertText(editor: HTMLElement, text: string) {
   if (hasText(editor, text)) return;
 
   // 3) 최후 수단: DOM 직접 수정 후 input 이벤트
-  const p = document.createElement('p');
-  p.textContent = text;
-  editor.replaceChildren(p);
+  editor.replaceChildren(
+    ...text.split('\n').map((line) => {
+      const p = document.createElement('p');
+      if (line) p.textContent = line;
+      else p.append(document.createElement('br'));
+      return p;
+    }),
+  );
   editor.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: text }));
 }
 

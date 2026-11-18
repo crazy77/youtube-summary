@@ -3,6 +3,7 @@ import {
   pendingPromptKey,
   type ExtensionMessage,
 } from '@/utils/messages';
+import { buildPrompt, getPromptTemplate } from '@/utils/settings';
 import { YOUTUBE_VIDEO_URL_PATTERNS, toCanonicalVideoUrl } from '@/utils/youtube';
 
 const MENU_LINK = 'send-link-to-gemini';
@@ -27,7 +28,8 @@ async function sendToGemini(rawUrl: string | undefined, sourceTab?: Browser.tabs
   });
   if (tab.id === undefined) return;
 
-  await browser.storage.session.set({ [pendingPromptKey(tab.id)]: videoUrl });
+  const prompt = buildPrompt(await getPromptTemplate(), videoUrl);
+  await browser.storage.session.set({ [pendingPromptKey(tab.id)]: prompt });
 }
 
 export default defineBackground(() => {
