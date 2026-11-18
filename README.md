@@ -21,11 +21,13 @@ pnpm compile  # 타입 체크
 
 ## 사용법
 
+- 썸네일 목록(홈, 검색, 추천, 채널, 쇼츠)의 영상 제목 왼쪽 Gemini 버튼 클릭
 - 유튜브 썸네일이나 영상 제목 위에서 우클릭 → **이 영상을 Gemini로 보내기**
 - 영상 재생 페이지에서 우클릭 또는 툴바 아이콘 클릭 → 지금 보는 영상을 보내기
 
 ## 구조
 
 - `entrypoints/background.ts` — 우클릭 메뉴, 툴바 아이콘, Gemini 탭 열기
+- `entrypoints/youtube.content/` — 썸네일 제목 옆 Gemini 버튼
 - `entrypoints/gemini.content/` — Gemini 페이지에서 링크를 입력하고 전송
 - `utils/youtube.ts` — 영상 URL 정리 (재생목록·시간 파라미터 제거)
